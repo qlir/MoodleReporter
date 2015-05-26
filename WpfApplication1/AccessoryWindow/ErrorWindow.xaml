@@ -1,0 +1,32 @@
+﻿<Window x:Name="window" x:Class="UIReporter.AccessoryWindow.ErrorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:UIReporter.Converters"
+        Title="Ошибка"
+        Width="300"
+        Icon="{Binding ErrorImage, RelativeSource={RelativeSource Self}}" 
+        SizeToContent="Height"
+        ContentRendered="window_ContentRendered"
+        Style="{StaticResource WindowStyle}"
+        >
+    <Window.Resources>
+        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+    </Window.Resources>
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Image Width="30" Source="{Binding Path=ErrorImage, ElementName=window}"></Image>
+            <TextBlock Grid.Column="1" Margin="5 10" TextWrapping="Wrap" Text="{Binding Path=Exception.Message, ElementName=window}"></TextBlock>
+        </Grid>
+        <Expander Name="ErrorExpander" IsExpanded="False" Grid.Row="1" Header="Подробности" Foreground="{Binding Foreground,ElementName=window}">
+            <TextBox Style="{StaticResource TextBoxStyle}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Text="{Binding Path=Exception.StackTrace, ElementName=window, StringFormat={}{0},Mode=OneWay}"/>
+        </Expander>
+    </Grid>
+</Window>

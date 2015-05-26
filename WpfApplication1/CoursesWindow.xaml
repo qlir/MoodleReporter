@@ -1,0 +1,84 @@
+﻿<Window x:Class="UIReporter.CoursesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:validations="clr-namespace:UIReporter.Validations"
+        Title="Курсы" Height="300" Width="300" MinWidth="300" MinHeight="100" Name="CoursesWindows" Closing="CoursesWindow_OnClosing"
+        Style="{StaticResource WindowStyle}"
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <DataGrid
+            CellEditEnding="CoursesDG_OnCellEditEnding"
+            Name="CoursesDG"
+            ItemsSource="{Binding ElementName=CoursesWindows, Path=Courses}" 
+            AutoGenerateColumns="False"
+            PreviewKeyDown="CoursesDG_OnPreviewKeyDown"
+            CanUserDeleteRows="False"
+            CanUserAddRows="False"
+            RowEditEnding="CoursesDG_OnRowEditEnding"
+            Style="{StaticResource DataGridAppStyle}"
+            ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+            >
+            <DataGrid.CellStyle>
+                <Style BasedOn="{StaticResource DataGridCellStyle}" TargetType="DataGridCell">
+                    <EventSetter Event="GotFocus" Handler="Cell_GotFocus" />
+                </Style>
+            </DataGrid.CellStyle>
+            <DataGrid.RowValidationRules >
+                <validations:CourseRowValidate ValidationStep="UpdatedValue"/>
+            </DataGrid.RowValidationRules>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" EditingElementStyle="{StaticResource ErrorStyle}" >
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="Id">
+                            <Binding.ValidationRules>
+                                <validations:CourseIdValidationRule/>
+                                <validations:UniqeCourseIdValidate ValidationStep="CommittedValue" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Имя" IsReadOnly="True" Width="*" EditingElementStyle="{StaticResource ErrorStyle}">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="ShortName">
+                            <Binding.ValidationRules>
+                                <validations:NonEmptyStringValidationRule ErrorText="Поле 'Имя' должно быть заполнено."/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button DataContext="{Binding}" Click="DeletItem_onClick" Style="{StaticResource DeleteButtonStyle}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0">ID курса:</Label>
+            <TextBox  Name="NewIdTextBox" Style="{StaticResource TextBoxStyle}" VerticalContentAlignment="Center" Grid.Column="1" Text="{Binding Path=NewId, UpdateSourceTrigger=PropertyChanged, ElementName=CoursesWindows, NotifyOnTargetUpdated=True,NotifyOnValidationError=True}">
+            </TextBox>
+            <Button Margin="10 2" Width="100" Name="AddButton" Grid.Column="2" Click="ButtonBase_OnClick" Content="Добавить" HorizontalAlignment="Right">
+                <!--<Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=Validation.HasError,Source={x:Reference NewIdTextBox}}" Value="True">
+                                <Setter Property="IsEnabled" Value="False"></Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>-->
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

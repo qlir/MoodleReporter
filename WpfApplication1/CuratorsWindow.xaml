@@ -1,0 +1,125 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:uiReporter="clr-namespace:UIReporter"
+        xmlns:validations="clr-namespace:UIReporter.Validations"
+        xmlns:Converters="clr-namespace:UIReporter.Converters"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:reportsGenerator="clr-namespace:ReportsGenerator;assembly=ReportsGenerator"
+        x:Class="UIReporter.CuratorsWindow"
+        Title="Кураторы" Height="300" Width="500" x:Name="CuratorsWindows" Closing="CuratorsWindow_OnClosing"
+        Style="{StaticResource WindowStyle}"
+    >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <DataGrid
+            CellEditEnding="CuratorsDG_OnCellEditEnding"
+            x:Name="CuratorsDG" 
+            ItemsSource="{Binding Curators, ElementName=CuratorsWindows}" 
+            AutoGenerateColumns="False"
+            CanUserDeleteRows="False"
+            RowEditEnding="CuratorsDG_OnRowEditEnding"
+            Style="{StaticResource DataGridAppStyle}"
+            ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+            >
+            <DataGrid.CellStyle>
+                <Style BasedOn="{StaticResource DataGridCellStyle}" TargetType="DataGridCell">
+                    <EventSetter Event="GotFocus" Handler="Cell_GotFocus" />
+                </Style>
+            </DataGrid.CellStyle>
+            <DataGrid.Resources>
+                <!-- <Style x:Key="ErrorStyle" TargetType="{x:Type TextBox}">
+                    <Style.Triggers>
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter Property="ToolTip" Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Style.Triggers>
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter Property="ToolTip" Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>-->
+            </DataGrid.Resources>
+            <DataGrid.RowValidationRules>
+                <validations:CuratorRowValidate ValidationStep="UpdatedValue"/>
+            </DataGrid.RowValidationRules>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="E-mail" Width="*">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="Email">
+                            <Binding.ValidationRules>
+                                <validations:EmailValidationRule/>
+                                <validations:UniqeCuratorsEmailValidate ValidationStep="CommittedValue" />
+                            </Binding.ValidationRules>
+                        </Binding>
+
+                    </DataGridTextColumn.Binding>
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style BasedOn="{StaticResource ErrorStyle}" TargetType="TextBox">
+                            <EventSetter Event="LostFocus" Handler="LostFocus_Handler"></EventSetter>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="ФИО" Width="*">
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style BasedOn="{StaticResource ErrorStyle}" TargetType="TextBox">
+                            <EventSetter Event="LostFocus" Handler="Fio_LostFocus"></EventSetter>
+                            <EventSetter Event="LostFocus" Handler="LostFocus_Handler"></EventSetter>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="FullName">
+                            <Binding.ValidationRules>
+                                <validations:NonEmptyStringValidationRule ErrorText="Поле 'Имя' должно быть заполнено."/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridComboBoxColumn Header="Пол" SelectedValueBinding="{Binding Gender}" Width="*">
+                    <DataGridComboBoxColumn.EditingElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="ItemsSource" Value="{Binding Path=Genders, Source={StaticResource GlobalVariables}}" />
+                        </Style>
+                    </DataGridComboBoxColumn.EditingElementStyle>
+                    <DataGridComboBoxColumn.ElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="ItemsSource" Value="{Binding Path=Genders, Source={StaticResource GlobalVariables}}" />
+                        </Style>
+                    </DataGridComboBoxColumn.ElementStyle>
+                </DataGridComboBoxColumn>
+                <DataGridTextColumn Header="Город" EditingElementStyle="{StaticResource ErrorStyle}" Width="*" Binding="{Binding Path=City, UpdateSourceTrigger=PropertyChanged}">
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Организация" Width="*">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="Institution">
+                            <Binding.ValidationRules>
+                                <validations:NonEmptyStringValidationRule ErrorText="Поле 'Организация' должно быть заполнено."/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style BasedOn="{StaticResource ErrorStyle}" TargetType="TextBox">
+                            <EventSetter Event="LostFocus" Handler="LostFocus_Handler"></EventSetter>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button DataContext="{Binding}" Click="DeletItem_onClick" Style="{StaticResource DeleteButtonStyle}"></Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
+            <Button IsEnabled="{Binding IsActualData, Converter={StaticResource InverseBooleanConverter}, ElementName=CuratorsWindows}" Margin="5"  x:Name="SaveButton" Content="Сохранить" Click="SaveButton_OnClick"/>
+        </StackPanel>
+    </Grid>
+</Window>
