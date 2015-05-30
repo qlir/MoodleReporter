@@ -132,7 +132,7 @@ namespace UIReporter.Validations
                 {
                     var curator = (Curator)dataGridRow.Item;
                     return EmailValidationRule.Check(curator.Email) ??
-                           NonEmptyStringValidationRule.Check(curator.FullName, "Поле 'ФИО' должно быть заполненно.") ??
+                           NonEmptyStringValidationRule.Check(curator.FirstName, "Поле 'Имя Отчество' должно быть заполненно.") ??
                            NonEmptyStringValidationRule.Check(curator.Institution, "Поле 'Организация' должно быть заполненно.") ??
                            ValidationResult.ValidResult;
                 }

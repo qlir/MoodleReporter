@@ -17,8 +17,11 @@ namespace ReportsGenerator.DataStructures
         [JsonProperty("email")]
         public string Email { get; set; }
 
-        [JsonProperty("name")]
-        public string FullName { get; set; }
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+        
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
 
         public void TryParseGender(string name)
         {
@@ -50,8 +53,8 @@ namespace ReportsGenerator.DataStructures
             get
             {
                 if (Gender != null) return Gender == Strings.M;
-                if (string.IsNullOrEmpty(FullName)) return false;
-                var s = FullName.Trim().Split(' ');
+                if (string.IsNullOrEmpty(FirstName)) return false;
+                var s = FirstName.Trim().Split(' ');
                 if (s.Length <= 0) return true;
                 return (s.Length > 1 ? s[1] : s[0])[s.Length - 1] == Strings.PatronymicLastLeter;
             }

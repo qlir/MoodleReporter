@@ -233,7 +233,7 @@ namespace ReportsGenerator
             email.IsBodyHtml = true;
             email.Body = Template.Replace("{{tables}}", tables).Replace(
                 "{{wellcome}}",
-                String.Format("Уважаем{0} {1}", (curator.IsMan ? "ый" : "ая"), curator.FullName));
+                String.Format("Уважаем{0} {1}", (curator.IsMan ? "ый" : "ая"), curator.FirstName));
             return email;
         }
 

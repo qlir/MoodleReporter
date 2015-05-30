@@ -6,9 +6,9 @@
              xmlns:reportsGenerator="clr-namespace:ReportsGenerator;assembly=ReportsGenerator"
              xmlns:uiReporter="clr-namespace:UIReporter"
              StartupUri="MainWindow.xaml"
-             
              >
     <Application.Resources>
+        <Color x:Key="BackgroundColor" >DarkSlateBlue</Color>
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
         <converters:ObjectDataProviderConverter x:Key="ObjectDataProviderConverter" />
         <converters:IsNewRow x:Key="IsNewRow" />

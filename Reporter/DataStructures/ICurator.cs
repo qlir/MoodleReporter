@@ -10,7 +10,7 @@ namespace ReportsGenerator.DataStructures
     {
         string Institution { get; }
         string Email { get; }
-        string FullName { get; }
+        string FirstName { get; }
         string Caption { get; set; }
         bool IsMan { get;}
     }

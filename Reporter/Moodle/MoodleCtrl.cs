@@ -19,7 +19,7 @@ namespace ReportsGenerator.Moodle
 {
     class MoodleCtrl
     {
-        private const string RequestMethod = "GET"; 
+        private const string RequestMethod = "GET";
         public string Token { get; set; }
 
         public string MoodleServer { get; set; }
@@ -29,7 +29,7 @@ namespace ReportsGenerator.Moodle
             try
             {
                 WebRequest request = WebRequest.Create(url);
-                //Trace.WriteLine(DateTime.Now + url);
+                Trace.WriteLine(DateTime.Now + url);
                 request.Method = RequestMethod;
                 request.Timeout = 15000;
                 WebResponse response;
@@ -236,7 +236,7 @@ namespace ReportsGenerator.Moodle
             catch (Exception e)
             {
 
-                throw new ReporterException("При попытке получения данных о курсах с ID: \"" + string.Join(", ", ids) + "\" возникла следующая ошибка:\"" + e.Message + "\"");
+                throw new ReporterException("При попытке получения данных о курсах с ID: \"" + string.Join(", ", ids) + "\" возникла следующая ошибка:\"" + e.Message + "\"", e);
             }
         }
 

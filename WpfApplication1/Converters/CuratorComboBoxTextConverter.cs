@@ -13,7 +13,7 @@ namespace UIReporter.Converters
             if (value is Curator)
             {
                 Curator c = ((Curator)value);
-                return string.Format("{0} {1}| {2}", c.Institution, c.City == null ? String.Empty : "| " + c.City, c.FullName);
+                return string.Format("{0} {1}| {2}", c.Institution, c.City == null ? String.Empty : "| " + c.City, c.FirstName);
             }
             return value;
         }

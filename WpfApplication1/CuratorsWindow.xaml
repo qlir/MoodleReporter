@@ -7,7 +7,7 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:reportsGenerator="clr-namespace:ReportsGenerator;assembly=ReportsGenerator"
         x:Class="UIReporter.CuratorsWindow"
-        Title="Кураторы" Height="300" Width="500" x:Name="CuratorsWindows" Closing="CuratorsWindow_OnClosing"
+        Title="Кураторы" Height="300" Width="600" x:Name="CuratorsWindows" Closing="CuratorsWindow_OnClosing"
         Style="{StaticResource WindowStyle}"
     >
     <Grid>
@@ -58,7 +58,6 @@
                                 <validations:UniqeCuratorsEmailValidate ValidationStep="CommittedValue" />
                             </Binding.ValidationRules>
                         </Binding>
-
                     </DataGridTextColumn.Binding>
                     <DataGridTextColumn.EditingElementStyle>
                         <Style BasedOn="{StaticResource ErrorStyle}" TargetType="TextBox">
@@ -66,7 +65,7 @@
                         </Style>
                     </DataGridTextColumn.EditingElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="ФИО" Width="*">
+                <DataGridTextColumn Header="Имя Отчество" Width="*">
                     <DataGridTextColumn.EditingElementStyle>
                         <Style BasedOn="{StaticResource ErrorStyle}" TargetType="TextBox">
                             <EventSetter Event="LostFocus" Handler="Fio_LostFocus"></EventSetter>
@@ -74,13 +73,14 @@
                         </Style>
                     </DataGridTextColumn.EditingElementStyle>
                     <DataGridTextColumn.Binding>
-                        <Binding Path="FullName">
+                        <Binding Path="FirstName">
                             <Binding.ValidationRules>
-                                <validations:NonEmptyStringValidationRule ErrorText="Поле 'Имя' должно быть заполнено."/>
+                                <validations:NonEmptyStringValidationRule ErrorText="Поле 'Имя Отчесто' должно быть заполнено."/>
                             </Binding.ValidationRules>
                         </Binding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
+                <DataGridTextColumn Header="Фамилия" EditingElementStyle="{StaticResource ErrorStyle}" Width="*" Binding="{Binding Path=LastName, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridComboBoxColumn Header="Пол" SelectedValueBinding="{Binding Gender}" Width="*">
                     <DataGridComboBoxColumn.EditingElementStyle>
                         <Style TargetType="ComboBox">
