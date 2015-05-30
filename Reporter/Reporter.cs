@@ -191,7 +191,7 @@ namespace ReportsGenerator
             }
             else
             {
-                _sheetsForCurators.Add(curator, newSheet);
+                _sheetsForCurators.Add(curator, new StringBuilder(newSheet.ToString()));
             }
         }
 
