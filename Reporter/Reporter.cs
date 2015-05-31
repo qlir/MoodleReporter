@@ -94,7 +94,7 @@ namespace ReportsGenerator
                 Debug.WriteLine("1 " + DateTime.Now);
                 GenerationProgressEvent(++currentStep / stepsCount);
                 // Генерация для каждого курса
-                _reporter.reset();
+                _reporter.Reset();
                 Task<List<Group>> groupsOfCourse = GetGroups(rInfo.CourseID);
                 Task<List<User>> courseGroupUsers = _moodle.GetEnrolUsers(rInfo.CourseID, rInfo.GroupID);
                 Task<List<Activity>> activityWithGrades = _moodle.GetGrades(rInfo.CourseID, await courseGroupUsers);
@@ -109,7 +109,7 @@ namespace ReportsGenerator
                     foreach (var g in activity.Grades)
                     {
                         User user = (await courseGroupUsers).First(u => u.Id == g.UserId);
-                        _reporter.addItem(user, g, activity);
+                        _reporter.AddItem(user, g, activity);
                     }
                     Debug.WriteLine("4 " + DateTime.Now);
                 }

@@ -13,12 +13,12 @@ namespace ReportsGenerator.TableGenerator
         private static readonly int NumberToRound = Settings.Default.AccuracyGrades;
         private List<Item> items = new List<Item>();
 
-        public void reset()
+        public void Reset()
         {
             items.Clear();
         }
 
-        public void addItem(User user, Grade grade, Activity activity)
+        public void AddItem(User user, Grade grade, Activity activity)
         {
             int testId;
             items.Add(new Item()
@@ -74,15 +74,10 @@ namespace ReportsGenerator.TableGenerator
 
         public StringBuilder GenerateReportTable(ReportInfo reportInfo, Course course, string institution)
         {
-            int nonGradeColumnsCount = 2;
+            const int nonGradeColumnsCount = 2;
+            const int cycle = 4;
             const string passedColumnStyle = "background-color:#ffeeee";
             int weekNumber = ((DateTime.Now - reportInfo.StartDate).Days + 1) / 7;
-            HTMLTableGenerator table = new HTMLTableGenerator();
-            table.Init();
-            table.OpenColGroup();
-            table.AddColumnStyle(nonGradeColumnsCount, string.Empty);
-            table.AddColumnStyle(weekNumber, passedColumnStyle);
-            table.CloseColGroup();
             var items = from i in this.items
                         where i.Institution == institution
                         orderby i.FullName, i.TestId
@@ -119,6 +114,13 @@ namespace ReportsGenerator.TableGenerator
                 }
                 return a.TestId.CompareTo(b.TestId);
             });
+
+            HTMLTableGenerator table = new HTMLTableGenerator();
+            table.Init();
+            table.OpenColGroup();
+            table.AddColumnStyle(nonGradeColumnsCount, string.Empty);
+            table.AddColumnStyle(cycle > weekNumber ? weekNumber : orderedGrades.Count, passedColumnStyle);
+            table.CloseColGroup();
 
             if (!items.Any()) throw new ReporterException(String.Format("Группа \"{1}\" курса \"{0}\" не имеет пользователей с учреждением \"{2}\".", reportInfo.GroupName, course.ShortName, institution));
             table.AddCaption("Результаты " + weekNumber + "-й недели обучения по курсу \"" + course.ShortName + "\"");
