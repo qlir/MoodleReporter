@@ -2,16 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:validations="clr-namespace:UIReporter.Validations"
-        Icon="icons/icon.png"
-        xmlns:converters="clr-namespace:UIReporter.Converters"
-        xmlns:local="clr-namespace:UIReporter"
-        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        Style="{StaticResource WindowStyle}"
         Title="Reporter" Height="500" Width="800" Name="MyWindow"
         Closing="MainWindow_OnClosing"
-        Background="DarkSlateBlue"
         >
     <Window.Resources>
-        <Color x:Key="BackgroundColor" >DarkSlateBlue</Color>
         <Style x:Key="CuratorItemStyle" TargetType="TextBlock">
             <Setter Property="Text" Value="{Binding Converter={StaticResource CuratorComboBoxItemConverter}}"/>
             <Setter Property="ToolTip">
@@ -49,7 +44,7 @@
             <RowDefinition/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <Menu Grid.Row="0" Margin="0" Background="{Binding Background,ElementName=MyWindow}" Foreground="LightCyan">
+        <Menu Grid.Row="0" Margin="0" Background="{Binding Background,ElementName=MyWindow}" Foreground="{StaticResource TextBrush1}">
             <MenuItem Header="Настройки" Margin="0" Template="{StaticResource MenuItemControlTemplate}" Height="25">
                 <MenuItem Header="Управление Кураторами" Click="CuratorsCtrl_OnClick"></MenuItem>
                 <MenuItem Header="Управление Курсами" Click="CoursesCtrl_OnClick"></MenuItem>

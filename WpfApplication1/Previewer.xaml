@@ -5,24 +5,23 @@
         MinHeight="400" MinWidth="700" Name="Window" 
         Style="{StaticResource WindowStyle}"
         >
-
     <Grid DataContext="{Binding ElementName=Window}" Margin="3">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border Padding="3" BorderThickness="2,2,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#FFE7FFFC">
+        <Border Padding="3" BorderThickness="2,2,2,2" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{StaticResource TextBoxBackgroundBrush}">
             <Border.BorderBrush>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="{StaticResource DialogBorderColor1}" Offset="0"/>
                     <GradientStop Color="White" Offset="0.65"/>
-                    <GradientStop Color="#FFFCFCFC" Offset="0.35"/>
-                    <GradientStop Color="#FF070707" Offset="1"/>
+                    <GradientStop Color="White" Offset="0.35"/>
+                    <GradientStop Color="{StaticResource DialogBorderColor1}" Offset="1"/>
                 </LinearGradientBrush>
             </Border.BorderBrush>
             <StackPanel Orientation="Horizontal" >
                 <Button Click="Back_OnClick" HorizontalAlignment="Left" Padding="5" Content="&lt;&lt;" />
-                <TextBlock Width="50" DataContext="{Binding ElementName=Window}" Name="BottomCounterTextBlock" VerticalAlignment="Center" TextAlignment="Center" Foreground="Black">
+                <TextBlock Width="50" DataContext="{Binding ElementName=Window}" Name="BottomCounterTextBlock" VerticalAlignment="Center" TextAlignment="Center" Foreground="{StaticResource TextBrush3}">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0}/{1}">
                             <Binding Path="Number" />
@@ -43,7 +42,7 @@
                 <TextBlock VerticalAlignment="Center" Text="{Binding Path=DisplayedMessage.Subject}" />
             </StackPanel>
         </StackPanel>
-        <Border Grid.Row="1" BorderBrush="#49FFFFFF" BorderThickness="1,1,0,0">
+        <Border Grid.Row="1" BorderBrush="#49FFFFFF" BorderThickness="3,3,0,0">
             <WebBrowser Name="Browser" Navigating="webBrowser1_Navigating" ></WebBrowser>
         </Border>
     </Grid>

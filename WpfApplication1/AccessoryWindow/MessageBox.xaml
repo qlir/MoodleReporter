@@ -6,16 +6,8 @@
         MinWidth="300" SizeToContent="WidthAndHeight" ResizeMode="NoResize"
         WindowStyle="None"
         AllowsTransparency="True"
-        WindowStartupLocation="CenterOwner"
-        >
-    <Border BorderThickness="5">
-        <Border.BorderBrush>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="Black" Offset="0"/>
-                <GradientStop Color="White" Offset="0.5"/>
-                <GradientStop Color="Black" Offset="1"/>
-            </LinearGradientBrush>
-        </Border.BorderBrush>
+        WindowStartupLocation="CenterOwner">
+    <Border BorderThickness="5" BorderBrush="{StaticResource GradientBorderBrush}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -23,7 +15,7 @@
             </Grid.RowDefinitions>
 
             <TextBlock Margin="10" Text="{Binding Text,ElementName=MsgWindow}"></TextBlock>
-            <Rectangle Grid.Row="0" VerticalAlignment="Bottom" Stroke="DarkTurquoise"/>
+            <Rectangle Grid.Row="0" VerticalAlignment="Bottom" Stroke="{StaticResource TextBrush1}"/>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>

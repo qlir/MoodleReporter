@@ -98,8 +98,8 @@ namespace UIReporter
 
         private async void InitializeData()
         {
-            ProgressDialog.ShowDialog(null, "Запуск...", async (ProgressDialog pd) =>
-            {
+            /*ProgressDialog.ShowDialog(null, "Запуск...", async (ProgressDialog pd) =>
+            {*/
                 try
                 {
                     var coursesTask = loadCources();
@@ -119,8 +119,8 @@ namespace UIReporter
                     ErrorWindow.ShowError(e);
                 }
 
-            });
-            }
+           /* });*/
+        }
 
         public static void AddRange<T>(IList<T> observableCollection, IEnumerable<T> enumerable)
         {
@@ -297,7 +297,7 @@ namespace UIReporter
                 };
                 try
                 {
-                    _reporter.SendingProgressEvent += progressHandler;                   
+                    _reporter.SendingProgressEvent += progressHandler;
                     details = await SendReports();
                 }
                 catch (Exception ex)
@@ -306,7 +306,7 @@ namespace UIReporter
                 }
                 _reporter.SendingProgressEvent -= progressHandler;
             });
-            if (details!=null) new SendReportWindow(details).ShowDialog();
+            if (details != null) new SendReportWindow(details).ShowDialog();
         }
 
         private async Task<Dictionary<MailMessage, string>> SendReports()
