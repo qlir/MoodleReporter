@@ -98,15 +98,15 @@ namespace ReportsGenerator.TableGenerator
                 var regexp = new Regex("\\d+");
                 string testNumA = regexp.Match(a.TestName).Value;
                 string testNumB = regexp.Match(b.TestName).Value;
-                if (testNumA != null && testNumB != null)
+                if (!string.IsNullOrEmpty(testNumA) && !string.IsNullOrEmpty(testNumB))
                 {
                     return int.Parse(testNumA).CompareTo(int.Parse(testNumB));
                 }
-                if (testNumA == null && testNumB != null)
+                if (string.IsNullOrEmpty(testNumA) && !string.IsNullOrEmpty(testNumB))
                 {
                     return 1;
                 }
-                if (testNumA != null && testNumB == null)
+                if (!string.IsNullOrEmpty(testNumA) && string.IsNullOrEmpty(testNumB))
                 {
                     return -1;
                 }
@@ -158,7 +158,7 @@ namespace ReportsGenerator.TableGenerator
             var testsProgress = CalcProgressInstitution(institution);
             foreach (var grade in orderedGrades)
             {
-                table.addCell(Math.Round(testsProgress[grade.TestId] * 100).ToString(numberFormat) + "%");
+                table.addCell(Math.Round(testsProgress[grade.TestId] * 100,NumberToRound).ToString(numberFormat) + "%");
             }
             table.closeRow();
 
