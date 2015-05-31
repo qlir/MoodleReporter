@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms.VisualStyles;
 using ReportsGenerator.DataStructures;
 
 namespace ReportsGenerator.TableGenerator
@@ -74,8 +75,14 @@ namespace ReportsGenerator.TableGenerator
         public StringBuilder GenerateReportTable(ReportInfo reportInfo, Course course, string institution)
         {
             int nonGradeColumnsCount = 2;
+            const string passedColumnStyle = "background-color:#ffeeee";
+            int weekNumber = ((DateTime.Now - reportInfo.StartDate).Days + 1) / 7;
             HTMLTableGenerator table = new HTMLTableGenerator();
-            table.init();
+            table.Init();
+            table.OpenColGroup();
+            table.AddColumnStyle(nonGradeColumnsCount, string.Empty);
+            table.AddColumnStyle(weekNumber, passedColumnStyle);
+            table.CloseColGroup();
             var items = from i in this.items
                         where i.Institution == institution
                         orderby i.FullName, i.TestId
@@ -112,57 +119,56 @@ namespace ReportsGenerator.TableGenerator
                 }
                 return a.TestId.CompareTo(b.TestId);
             });
-            if (!items.Any()) throw new ReporterException(String.Format("Группа \"{1}\" курса \"{0}\" не имеет пользователей с учреждением \"{2}\".", reportInfo.GroupName, course.ShortName, institution));
-            int weekNumber = ((DateTime.Now - reportInfo.StartDate).Days + 1) / 7;
-            table.addCaption("Результаты " + weekNumber + "-й недели обучения по курсу \"" + course.ShortName + "\"");
-            table.addHeaderRow(new[] { "ФИО", "Учреждение  (Организация)" }.Concat(orderedGrades.Select(a => a.TestName)));
 
-            var gradesPasses = items.First().grades.Values.Select(g => g.GradePass);
-            table.openRow("color:brown;font-weight:bold;");
-            table.addCell("Проходной балл", nonGradeColumnsCount);
+            if (!items.Any()) throw new ReporterException(String.Format("Группа \"{1}\" курса \"{0}\" не имеет пользователей с учреждением \"{2}\".", reportInfo.GroupName, course.ShortName, institution));
+            table.AddCaption("Результаты " + weekNumber + "-й недели обучения по курсу \"" + course.ShortName + "\"");
+            table.AddHeaderRow(new[] { "ФИО", "Учреждение  (Организация)" }.Concat(orderedGrades.Select(a => a.TestName)));
+
+            table.OpenRow("color:brown;font-weight:bold;");
+            table.AddCell("Проходной балл", nonGradeColumnsCount);
             const string numberFormat = "0.00";
             foreach (var item in orderedGrades)
             {
-                table.addCell(Math.Round(item.GradePass, NumberToRound).ToString(numberFormat));
+                table.AddCell(Math.Round(item.GradePass, NumberToRound).ToString(numberFormat));
             }
-            table.closeRow();
+            table.CloseRow();
 
             foreach (var i in items)
             {
                 var sortedGrade = orderedGrades.Select(g => i.grades.Values.First(vg => vg.TestId == g.TestId));
-                table.addRow(new[] { i.FullName, i.Institution }.Concat(
+                table.AddRow(new[] { i.FullName, i.Institution }.Concat(
                    sortedGrade.Select(item => Math.Round(item.Grade, NumberToRound).ToString(numberFormat))));
             }
 
-            table.openRow("font-weight:bold;");
-            table.addCell("Среднее по РИЦ", nonGradeColumnsCount);
+            table.OpenRow("font-weight:bold;");
+            table.AddCell("Среднее по РИЦ", nonGradeColumnsCount);
             var institutionAvg = CalcAVGbyInstitution(institution);
             foreach (var grade in orderedGrades)
             {
-                table.addCell(Math.Round(institutionAvg[grade.TestId], NumberToRound).ToString(numberFormat));
+                table.AddCell(Math.Round(institutionAvg[grade.TestId], NumberToRound).ToString(numberFormat));
             }
-            table.closeRow();
+            table.CloseRow();
 
-            table.openRow("font-weight:bold;color:red;");
-            table.addCell("Среднее по всем РИЦам", nonGradeColumnsCount);
+            table.OpenRow("font-weight:bold;color:red;");
+            table.AddCell("Среднее по всем РИЦам", nonGradeColumnsCount);
             var commonAvg = CalcAVGbyInstitutions();
             foreach (var grade in orderedGrades)
             {
-                table.addCell(Math.Round(commonAvg[grade.TestId], NumberToRound).ToString(numberFormat));
+                table.AddCell(Math.Round(commonAvg[grade.TestId], NumberToRound).ToString(numberFormat));
             }
-            table.closeRow();
+            table.CloseRow();
 
 
-            table.openRow("font-weight:bold;");
-            table.addCell("Процент успевающих", nonGradeColumnsCount);
+            table.OpenRow("font-weight:bold;");
+            table.AddCell("Процент успевающих", nonGradeColumnsCount);
             var testsProgress = CalcProgressInstitution(institution);
             foreach (var grade in orderedGrades)
             {
-                table.addCell(Math.Round(testsProgress[grade.TestId] * 100,NumberToRound).ToString(numberFormat) + "%");
+                table.AddCell(Math.Round(testsProgress[grade.TestId] * 100, NumberToRound).ToString(numberFormat) + "%");
             }
-            table.closeRow();
+            table.CloseRow();
 
-            return table.close();
+            return table.Close();
         }
 
         private class Item

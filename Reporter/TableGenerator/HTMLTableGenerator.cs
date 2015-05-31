@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace ReportsGenerator.TableGenerator
 {
@@ -16,76 +17,94 @@ namespace ReportsGenerator.TableGenerator
         private const string ThClose = "</th>";
         private const string TdOpen = "<td style='border-collapse: collapse;padding:5px 5px; border: 2px solid dimgray;{0}' colspan='{1}'>";
         private const string TdClose = "</td>";
+        private const string ColgroupOpen = "<colgroup>";
+        private const string ColgroupClose = "</colgroup>";
+        private const string ColumnStyle = @"<col span='{0}' style='{1}'></colgroup>";
 
-        StringBuilder table = new StringBuilder();
+        readonly StringBuilder _table = new StringBuilder();
 
-        public void init()
+        public void Init()
         {
-            table.Clear();
-            table.Append(TableOpen);
+            _table.Clear();
+            _table.Append(TableOpen);
         }
 
-        public StringBuilder close()
+        public void OpenColGroup()
         {
-            return new StringBuilder().Append(table.Append(TableClose));
+            _table.Append(ColgroupOpen);
         }
 
-        public void addCaption(string caption)
+        public void CloseColGroup()
         {
-            table.Append(CaptionOpen).Append(caption).Append(CaptionClose);
+            _table.Append(ColgroupClose);
         }
 
-        public void addCell(string value, string style, int columnSpan)
+        public void AddColumnStyle(int span, string style)
         {
-            table.AppendFormat(TdOpen, style, columnSpan).Append(value).Append(TdClose);
-        }
-        public void addCell(string value, string style)
-        {
-            addCell(value, style, 1);
+            _table.AppendFormat(ColumnStyle, span, style);
         }
 
-        public void addCell(string value)
+        public StringBuilder Close()
         {
-            addCell(value, string.Empty, 1);
+            return new StringBuilder().Append(_table.Append(TableClose));
         }
 
-        public void addCell(string value, int columnSpan)
+        public void AddCaption(string caption)
         {
-            addCell(value, string.Empty, columnSpan);
+            _table.Append(CaptionOpen).Append(caption).Append(CaptionClose);
         }
 
-        public void openRow()
+        public void AddCell(string value, string style, int columnSpan)
         {
-            openRow(string.Empty);
+            _table.AppendFormat(TdOpen, style, columnSpan).Append(value).Append(TdClose);
         }
-        public void openRow(string style)
+        public void AddCell(string value, string style)
         {
-            table.AppendFormat(TrOpen, style);
-        }
-
-        public void closeRow()
-        {
-            table.Append(TrClose);
+            AddCell(value, style, 1);
         }
 
-        public void addHeaderRow(IEnumerable<string> value)
+        public void AddCell(string value)
         {
-            table.Append(TrOpen);
+            AddCell(value, string.Empty, 1);
+        }
+
+        public void AddCell(string value, int columnSpan)
+        {
+            AddCell(value, string.Empty, columnSpan);
+        }
+
+        public void OpenRow()
+        {
+            OpenRow(string.Empty);
+        }
+        public void OpenRow(string style)
+        {
+            _table.AppendFormat(TrOpen, style);
+        }
+
+        public void CloseRow()
+        {
+            _table.Append(TrClose);
+        }
+
+        public void AddHeaderRow(IEnumerable<string> value)
+        {
+            _table.Append(TrOpen);
             foreach (var v in value)
             {
-                table.Append(ThOpen).Append(v).Append(ThClose);
+                _table.Append(ThOpen).Append(v).Append(ThClose);
             }
-            table.Append(TrClose);
+            _table.Append(TrClose);
         }
 
-        public void addRow(IEnumerable<string> value)
+        public void AddRow(IEnumerable<string> value)
         {
-            openRow();
+            OpenRow();
             foreach (var v in value)
             {
-                table.AppendFormat(TdOpen, string.Empty, 1).Append(v).Append(TdClose);
+                _table.AppendFormat(TdOpen, string.Empty, 1).Append(v).Append(TdClose);
             }
-            closeRow();
+            CloseRow();
         }
     }
 }
