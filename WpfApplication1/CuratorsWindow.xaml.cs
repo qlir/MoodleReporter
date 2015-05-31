@@ -161,7 +161,7 @@ namespace UIReporter
         {
             if (e.EditAction == DataGridEditAction.Cancel) return;
             IsActualData = false;
-            if (e.Column.Header.ToString() == "E-mail" && e.Row.DataContext as Curator != null)
+            if (e.Column.Header != null && e.Column.Header.ToString() == "E-mail" && e.Row.DataContext as Curator != null)
             {
                 var oldCuratorsEmail = ((Curator)e.Row.DataContext).Email;
                 if (_context.ReportsInfos.Any(c => c.CuratorsEmail == oldCuratorsEmail) && !_changedEmails.ContainsKey(e.Row.DataContext.GetHashCode()))
