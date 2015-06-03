@@ -1,10 +1,14 @@
-﻿using Newtonsoft.Json;
-
-namespace ReportsGenerator.DataStructures
+﻿namespace ReportsGenerator.DataStructures
 {
+    using Newtonsoft.Json;
+
     public class MoodleException
     {
         [JsonProperty("message")]
-        public string Message { get; set; }
+        public string Message
+        {
+            get;
+            set;
+        }
     }
 }

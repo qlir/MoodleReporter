@@ -1,38 +1,58 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-
-namespace ReportsGenerator.DataStructures
+﻿namespace ReportsGenerator.DataStructures
 {
+    using System.Collections.Generic;
+
+    using Newtonsoft.Json;
+
     public class User : ICurator
     {
-        [JsonProperty("id")]
-        public string Id { get; set; }
-
-        [JsonProperty("username")]
-        public string UserName { get; set; }
-        
-        [JsonProperty("firstname")]
-        public string FirstName { get; set; }
-        
-        [JsonProperty("lastname")]
-        public string LastName { get; set; }
-        
-        [JsonProperty("fullname")]
-        public string FullName { get; set; }
+        public string Caption
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("email")]
-        public string Email { get; set; }
-        
-        [JsonProperty("institution")]
-        public string Institution { get; set; }
+        public string Email
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("firstname")]
+        public string FirstName
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("fullname")]
+        public string FullName
+        {
+            get;
+            set;
+        }
 
         [JsonProperty("groups")]
-        public IEnumerable<Group> Groups { get; set; }
+        public IEnumerable<Group> Groups
+        {
+            get;
+            set;
+        }
 
-        [JsonProperty("roles")]
-        public IEnumerable<Role> Roles { get; set; }
+        [JsonProperty("id")]
+        public string Id
+        {
+            get;
+            set;
+        }
 
-        public string Caption { get; set; }
+        [JsonProperty("institution")]
+        public string Institution
+        {
+            get;
+            set;
+        }
 
         public bool IsMan
         {
@@ -43,10 +63,35 @@ namespace ReportsGenerator.DataStructures
             }
         }
 
+        [JsonProperty("lastname")]
+        public string LastName
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("roles")]
+        public IEnumerable<Role> Roles
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("username")]
+        public string UserName
+        {
+            get;
+            set;
+        }
+
         public class Role
         {
             [JsonProperty("roleid")]
-            public int Id { get; set; }
+            public int Id
+            {
+                get;
+                set;
+            }
         }
     }
 }

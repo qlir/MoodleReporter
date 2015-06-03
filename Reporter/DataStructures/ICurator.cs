@@ -1,17 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReportsGenerator.DataStructures
+﻿namespace ReportsGenerator.DataStructures
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
     public interface ICurator
     {
-        string Institution { get; }
-        string Email { get; }
-        string FirstName { get; }
-        string Caption { get; set; }
-        bool IsMan { get;}
+        string Caption
+        {
+            get;
+            set;
+        }
+
+        string Email
+        {
+            get;
+        }
+
+        string FirstName
+        {
+            get;
+        }
+
+        string Institution
+        {
+            get;
+        }
+
+        bool IsMan
+        {
+            get;
+        }
     }
 }

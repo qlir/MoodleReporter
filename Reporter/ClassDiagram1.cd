@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ReportsGenerator.DataStructures.Activity">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAIAAAAAAQAAAAAEAAAgAAAAAEAAAA=</HashCode>
+      <FileName>DataStructures\Activity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReportsGenerator.DataStructures.Course">
+    <Position X="0.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataStructures\Course.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReportsGenerator.DataStructures.Curator" BaseTypeListCollapsed="true">
+    <Position X="4" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Events" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAGEAAACAAAACIYAAAIAAAgAAAAAAACAAAAAAAAAg=</HashCode>
+      <FileName>DataStructures\Curator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ReportsGenerator.DataStructures.Grade">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>DataStructures\Grade.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReportsGenerator.DataStructures.Group">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataStructures\Group.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReportsGenerator.DataStructures.ReportInfo" BaseTypeListCollapsed="true">
+    <Position X="6.25" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Events" Collapsed="true" />
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="ReportsGenerator.DataStructures.ReportInfo.CuratorsGenerationTypeEnum">
+        <TypeIdentifier>
+          <NewMemberFileName>DataStructures\ReportInfo.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAABAAAAAIQAAAAAggEAAAAQAIBAAAEAAAAE=</HashCode>
+      <FileName>DataStructures\ReportInfo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="1.3" Collapsed="true" />
+  </Class>
+  <Class Name="ReportsGenerator.DataStructures.Time">
+    <Position X="2.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataStructures\Time.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReportsGenerator.DataStructures.User" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="4" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="ReportsGenerator.DataStructures.User.Role" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataStructures\User.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAACCEAAACAAAIAAQAAAAAAAAgAAAAAACQAAAAAAAAg=</HashCode>
+      <FileName>DataStructures\User.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.248" Collapsed="true" />
+  </Class>
+  <Class Name="ReportsGenerator.Mail.Mail">
+    <Position X="11.5" Y="0.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAEAAEAAAAAAAAgAAAAAAAACAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Mail\Mail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReportsGenerator.Mail.MailSettings">
+    <Position X="4" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAACAAAAAAAAAAACACAAAICAAAAAAAAAAA=</HashCode>
+      <FileName>Mail\MailSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReportsGenerator.Moodle.MoodleCtrl">
+    <Position X="8.75" Y="0.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAACAAAAEFAAAACIAAAAABACgAEABEAg=</HashCode>
+      <FileName>Moodle\MoodleCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReportsGenerator.TableGenerator.HTMLTableGenerator">
+    <Position X="11.5" Y="2.75" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AABABAAAAAAJAgCAIACggCUIAACSBAFAMAACAACAAAA=</HashCode>
+      <FileName>TableGenerator\HTMLTableGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReportsGenerator.TableGenerator.ReportTableGenerator">
+    <Position X="13.75" Y="2.75" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="ReportsGenerator.TableGenerator.ReportTableGenerator.Item" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>TableGenerator\ReportTableGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAIABAAAAggAAAAAgAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TableGenerator\ReportTableGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReportsGenerator.UserData.UserDataCtrl">
+    <Position X="8.75" Y="4.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgIAABAAAAMKAAFAAAQAAIAhAAAAAAAIA=</HashCode>
+      <FileName>UserData\UserDataCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReportsGenerator.Reporter">
+    <Position X="16" Y="0.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="ReportsGenerator.Reporter.GenerationProgress" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Reporter.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="ReportsGenerator.Reporter.SendingProgress" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Reporter.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>gCQAAAABBEAAwAgAEFATAQAAAIYCBAAEAAAQgAABABE=</HashCode>
+      <FileName>Reporter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="ReportsGenerator.DataStructures.ICurator">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACEAAACAAAAAAQAAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>DataStructures\ICurator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

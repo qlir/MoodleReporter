@@ -7,12 +7,9 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using ReportsGenerator.Annotations;
 using ReportsGenerator.DataStructures;
+using ReportsGenerator.UserData;
 using UIReporter.AccessoryWindow;
-using UIReporter.UserData;
 using H = UIReporter.Helpers.Helpers;
 using MessageBox = UIReporter.AccessoryWindow.MessageBox;
 

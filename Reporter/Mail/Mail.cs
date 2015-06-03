@@ -70,8 +70,8 @@ namespace ReportsGenerator.Mail
         {
             try
             {
-               /* message.To.Clear();
-                message.To.Add(new MailAddress("parafus@yandex.ru"));*/
+                /* message.To.Clear();
+                 message.To.Add(new MailAddress("parafus@yandex.ru"));*/
                 message.From = new MailAddress(email);
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 /*" + message.To + ":" + message.Subject + "*/

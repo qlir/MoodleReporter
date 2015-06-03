@@ -20,11 +20,19 @@ namespace ReportsGenerator.Moodle
     class MoodleCtrl
     {
         private const string RequestMethod = "GET";
-        public string Token { get; set; }
+        public string Token
+        {
+            get;
+            set;
+        }
 
-        public string MoodleServer { get; set; }
+        public string MoodleServer
+        {
+            get;
+            set;
+        }
 
-        private async Task<string> requestAsync(String url)
+        private async Task<string> RequestAsync(String url)
         {
             try
             {
@@ -45,7 +53,7 @@ namespace ReportsGenerator.Moodle
                 else
                 {
                     request.Abort();
-                    return await requestAsync(url);
+                    return await RequestAsync(url);
                 }
 
                 string responseFromServer;
@@ -67,7 +75,7 @@ namespace ReportsGenerator.Moodle
         public async Task<string> GetTokenAsync(string webService, string username, string password)
         {
             string url = string.Format(TokenRequest, MoodleServer, username, password, webService);
-            string response = await requestAsync(url);
+            string response = await RequestAsync(url);
             Regex r = new Regex("\"token\":\"(.*?)\"");
             return r.Match(response).Groups[0].Value;
         }
@@ -75,10 +83,10 @@ namespace ReportsGenerator.Moodle
         private async Task<string> GetFuncResult(string function, string token, string parameters)
         {
             string url = MoodleServer + "/webservice/rest/server.php?moodlewsrestformat=json&wstoken=" + token + "&wsfunction=" + function + "&" + parameters;
-            return await requestAsync(url);
+            return await RequestAsync(url);
         }
 
-        private T jsonToObjectAsync<T>(string json)
+        private T JsonToObjectAsync<T>(string json)
         {
             try
             {
@@ -115,7 +123,7 @@ namespace ReportsGenerator.Moodle
                 }
 
                 string jsonStr = await GetFuncResult("core_user_get_users_by_field", Token, parameters.ToString());
-                List<User> users = jsonToObjectAsync<List<User>>(jsonStr);
+                List<User> users = JsonToObjectAsync<List<User>>(jsonStr);
                 return users;
             }
             catch (Exception e)
@@ -133,7 +141,7 @@ namespace ReportsGenerator.Moodle
                 parameters.Append("&courseid=").Append(courseId);
 
                 string jsonStr = await GetFuncResult("core_enrol_get_enrolled_users", Token, parameters.ToString());
-                List<User> users = jsonToObjectAsync<List<User>>(jsonStr);
+                List<User> users = JsonToObjectAsync<List<User>>(jsonStr);
                 return users;
             }
             catch (Exception e)
@@ -152,7 +160,7 @@ namespace ReportsGenerator.Moodle
                 StringBuilder parameters = new StringBuilder();
                 parameters.Append("&courseid=").Append(courseId).Append("&options[0][name]=groupid&options[0][value]=").Append(groupId);
                 string jsonStr = await GetFuncResult("core_enrol_get_enrolled_users", Token, parameters.ToString());
-                List<User> users = jsonToObjectAsync<List<User>>(jsonStr);
+                List<User> users = JsonToObjectAsync<List<User>>(jsonStr);
                 Debug.WriteLine("getEnrolUsers--ok");
                 return users;
             }
@@ -180,7 +188,7 @@ namespace ReportsGenerator.Moodle
                 }
 
                 string jsonStr = await GetFuncResult("core_grades_get_grades", Token, parameters.ToString());
-                JObject jo = jsonToObjectAsync<JObject>(jsonStr);
+                JObject jo = JsonToObjectAsync<JObject>(jsonStr);
                 return jo.GetValue("items").ToObject<List<Activity>>();
             }
             catch (Exception e)
@@ -204,7 +212,7 @@ namespace ReportsGenerator.Moodle
                 }
 
                 string jsonStr = await GetFuncResult("core_grades_get_grades", Token, parameters.ToString());
-                JObject jo = jsonToObjectAsync<JObject>(jsonStr);
+                JObject jo = JsonToObjectAsync<JObject>(jsonStr);
                 return jo.GetValue("items").ToObject<List<Activity>>();
             }
             catch (Exception e)
@@ -231,7 +239,7 @@ namespace ReportsGenerator.Moodle
 
                 string jsonStr = await GetFuncResult("core_course_get_courses", Token, parameters.ToString());
 
-                return jsonToObjectAsync<List<Course>>(jsonStr);
+                return JsonToObjectAsync<List<Course>>(jsonStr);
             }
             catch (Exception e)
             {
@@ -267,7 +275,7 @@ namespace ReportsGenerator.Moodle
                 parameters.Append("&courseid=").Append(courseid);
 
                 string jsonStr = await GetFuncResult("core_group_get_course_groups", Token, parameters.ToString());
-                return jsonToObjectAsync<List<DataStructures.Group>>(jsonStr);
+                return JsonToObjectAsync<List<DataStructures.Group>>(jsonStr);
             }
             catch (Exception e)
             {

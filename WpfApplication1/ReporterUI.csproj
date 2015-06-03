@@ -130,7 +130,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Moodle.settings</DependentUpon>
     </Compile>
-    <Compile Include="UserData\UserDataCtrl.cs" />
     <Compile Include="Previewer.xaml.cs">
       <DependentUpon>Previewer.xaml</DependentUpon>
     </Compile>
@@ -212,10 +211,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Moodle.Designer.cs</LastGenOutput>
     </None>
-    <DesignData Include="UserData\Courses.json" />
-    <None Include="UserData\template.html" />
-    <None Include="UserData\ReportInfo.json" />
-    <DesignData Include="UserData\Curators.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

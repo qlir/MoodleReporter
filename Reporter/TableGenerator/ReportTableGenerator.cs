@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows.Forms.VisualStyles;
-using ReportsGenerator.DataStructures;
-
-namespace ReportsGenerator.TableGenerator
+﻿namespace ReportsGenerator.TableGenerator
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Windows.Forms.VisualStyles;
+
+    using ReportsGenerator.DataStructures;
+
     public class ReportTableGenerator
     {
         private static readonly int NumberToRound = Settings.Default.AccuracyGrades;
-        private List<Item> items = new List<Item>();
 
-        public void Reset()
-        {
-            items.Clear();
-        }
+        private List<Item> items = new List<Item>();
 
         public void AddItem(User user, Grade grade, Activity activity)
         {
@@ -38,8 +35,12 @@ namespace ReportsGenerator.TableGenerator
             var result = (from i in items
                           where (institution == null ? true : i.Institution == institution)
                           orderby i.TestId
-                          group i by new { testId = i.TestId } into g
-                          select new { Average = g.Average(r => r.Grade), g.Key.testId });
+                          group i by new
+            {
+                testId = i.TestId
+            }
+                     into g
+                     select new { Average = g.Average(r => r.Grade), g.Key.testId });
             return result.ToDictionary(g => g.testId, g => g.Average);
         }
 
@@ -53,7 +54,10 @@ namespace ReportsGenerator.TableGenerator
                           where i.Average > 0
                           orderby i.TestId
                           group i by i.TestId into g
-                          select new { Average = g.Average(r => r.Average), TestId = g.Key };
+                          select new
+            {
+                Average = g.Average(r => r.Average), TestId = g.Key
+            };
 
             return result2.ToDictionary(g => g.TestId, g => g.Average);
         }
@@ -64,12 +68,12 @@ namespace ReportsGenerator.TableGenerator
                     where i.Institution == institution
                     orderby i.TestId
                     group i by i.TestId
-                        into gr
-                        select new
-                        {
-                            gr.Key,
-                            Progress = gr.Count(v => v.Grade >= v.GradePass) / (double)gr.Count()
-                        }).ToDictionary(i => i.Key, i => i.Progress);
+                    into gr
+                    select new
+            {
+                gr.Key,
+                Progress = gr.Count(v => v.Grade >= v.GradePass) / (double)gr.Count()
+            }).ToDictionary(i => i.Key, i => i.Progress);
         }
 
         public StringBuilder GenerateReportTable(ReportInfo reportInfo, Course course, string institution)
@@ -82,17 +86,18 @@ namespace ReportsGenerator.TableGenerator
                         where i.Institution == institution
                         orderby i.FullName, i.TestId
                         group i by new
-                        {
-                            userId = i.UserId,
-                            i.FullName,
-                            i.Institution
-                        } into g
-                        select new
-                        {
-                            g.Key.FullName,
-                            g.Key.Institution,
-                            grades = g.ToDictionary(i => i.TestId, i => new { i.TestName, i.TestId, i.Grade, i.GradePass })
-                        };
+            {
+                userId = i.UserId,
+                i.FullName,
+                i.Institution
+            }
+            into g
+            select new
+            {
+                g.Key.FullName,
+                g.Key.Institution,
+                grades = g.ToDictionary(i => i.TestId, i => new { i.TestName, i.TestId, i.Grade, i.GradePass })
+            };
 
             var orderedGrades = items.First().grades.Values.ToList();
             orderedGrades.Sort((a, b) =>
@@ -122,9 +127,12 @@ namespace ReportsGenerator.TableGenerator
             table.AddColumnStyle(cycle > weekNumber ? weekNumber : orderedGrades.Count, passedColumnStyle);
             table.CloseColGroup();
 
-            if (!items.Any()) throw new ReporterException(String.Format("Группа \"{1}\" курса \"{0}\" не имеет пользователей с учреждением \"{2}\".", reportInfo.GroupName, course.ShortName, institution));
+            if (!items.Any())
+            {
+                throw new ReporterException(String.Format("Группа \"{1}\" курса \"{0}\" не имеет пользователей с учреждением \"{2}\".", reportInfo.GroupName, course.ShortName, institution));
+            }
             table.AddCaption("Результаты " + weekNumber + "-й недели обучения по курсу \"" + course.ShortName + "\"");
-            table.AddHeaderRow(new[] { "ФИО", "Учреждение  (Организация)" }.Concat(orderedGrades.Select(a => a.TestName)));
+            table.AddHeaderRow(new[] { "ФИО", "Учреждение  (Организация)" } .Concat(orderedGrades.Select(a => a.TestName)));
 
             table.OpenRow("color:brown;font-weight:bold;");
             table.AddCell("Проходной балл", nonGradeColumnsCount);
@@ -138,8 +146,8 @@ namespace ReportsGenerator.TableGenerator
             foreach (var i in items)
             {
                 var sortedGrade = orderedGrades.Select(g => i.grades.Values.First(vg => vg.TestId == g.TestId));
-                table.AddRow(new[] { i.FullName, i.Institution }.Concat(
-                   sortedGrade.Select(item => Math.Round(item.Grade, NumberToRound).ToString(numberFormat))));
+                table.AddRow(new[] { i.FullName, i.Institution } .Concat(
+                                 sortedGrade.Select(item => Math.Round(item.Grade, NumberToRound).ToString(numberFormat))));
             }
 
             table.OpenRow("font-weight:bold;");
@@ -160,7 +168,6 @@ namespace ReportsGenerator.TableGenerator
             }
             table.CloseRow();
 
-
             table.OpenRow("font-weight:bold;");
             table.AddCell("Процент успевающих", nonGradeColumnsCount);
             var testsProgress = CalcProgressInstitution(institution);
@@ -173,15 +180,54 @@ namespace ReportsGenerator.TableGenerator
             return table.Close();
         }
 
+        public void Reset()
+        {
+            items.Clear();
+        }
+
         private class Item
         {
-            internal string Institution { get; set; }
-            internal double Grade { get; set; }
-            internal string TestName { get; set; }
-            internal int TestId { get; set; }
-            internal string UserId { get; set; }
-            internal double GradePass { get; set; }
-            internal string FullName { get; set; }
+            internal string FullName
+            {
+                get;
+                set;
+            }
+
+            internal double Grade
+            {
+                get;
+                set;
+            }
+
+            internal double GradePass
+            {
+                get;
+                set;
+            }
+
+            internal string Institution
+            {
+                get;
+                set;
+            }
+
+            internal int TestId
+            {
+                get;
+                set;
+            }
+
+            internal string TestName
+            {
+                get;
+                set;
+            }
+
+            internal string UserId
+            {
+                get;
+                set;
+            }
         }
     }
 }

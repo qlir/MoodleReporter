@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Reporter
+﻿namespace Reporter
 {
-    class Table {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
 
-        UserDataInfo ToInfo;
-
-        public Item[] Items;
-
+    class Table
+    {
         public string[] Activities;
         public float[] CommonAVG;
-        public float[] TableAVG;
         public string Institution;
+        public Item[] Items;
+        public float[] TableAVG;
+
+        UserDataInfo ToInfo;
 
         public void Table(UserDataInfo toInfo, Item[] items, string[] activities, float[] commonAvg, float[] tableAvg)
         {
@@ -25,13 +24,12 @@ namespace Reporter
             TableAVG = tableAvg;
             ToInfo = toInfo;
         }
-        
+
         public class Item
         {
+            public float[] Grades;
             public string UserFirstName;
             public string UserLastName;
-            public float[] Grades;
         }
-
     }
 }

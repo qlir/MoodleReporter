@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace UIReporter.UserData
+namespace ReportsGenerator.UserData
 {
-    static class UserDataCtrl
+    public class UserDataCtrl
     {
         private const string UserDataDirrectory = "UserData/";
         private const string CuratorsJsonPath = "Curators.json";
@@ -83,10 +83,10 @@ namespace UIReporter.UserData
             var json = JsonConvert.SerializeObjectAsync(reportInfo);
             await WriteStringToFile(ReportInfoJsonPath, await json);
         }
-/*
-        public async Task SaveMails(IEnumerable<MailMessage> message)
-        {
-            
-        }*/
+        /*
+                public async Task SaveMails(IEnumerable<MailMessage> message)
+                {
+
+                }*/
     }
 }

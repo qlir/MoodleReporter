@@ -39,8 +39,16 @@ namespace ReportsGenerator
                 _moodle.Token = value;
             }
         }
-        public string Template { get; set; }
-        public IEnumerable<ReportInfo> ReportInfo { get; set; }
+        public string Template
+        {
+            get;
+            set;
+        }
+        public IEnumerable<ReportInfo> ReportInfo
+        {
+            get;
+            set;
+        }
 
         public string MoodleServer
         {
@@ -56,8 +64,14 @@ namespace ReportsGenerator
 
         public IEnumerable<Curator> Curators
         {
-            get { return _curators; }
-            set { _curators = value; }
+            get
+            {
+                return _curators;
+            }
+            set
+            {
+                _curators = value;
+            }
         }
 
         private readonly Dictionary<int, Course> _courses = new Dictionary<int, Course>();
@@ -67,7 +81,10 @@ namespace ReportsGenerator
 
         public IList<MailMessage> MessagesPreview
         {
-            get { return _messagesPreview; }
+            get
+            {
+                return _messagesPreview;
+            }
         }
 
         private readonly ReportTableGenerator _reporter = new ReportTableGenerator();
@@ -76,8 +93,16 @@ namespace ReportsGenerator
         private readonly Dictionary<int, Task<List<Group>>> _groupsCashe = new Dictionary<int, Task<List<Group>>>();
         private IEnumerable<Curator> _curators = new List<Curator>();
 
-        public MailSettings MailSettings { get; set; }
-        public string MailsPath { get; set; }
+        public MailSettings MailSettings
+        {
+            get;
+            set;
+        }
+        public string MailsPath
+        {
+            get;
+            set;
+        }
         public delegate void GenerationProgress(double progress);
         public event GenerationProgress GenerationProgressEvent;
         public async Task GenerateReportMessages()
@@ -85,7 +110,10 @@ namespace ReportsGenerator
             double stepsCount = ReportInfo.Count() * 4;
             double currentStep = 0;
             MailsPath = null;
-            if (!ReportInfo.Any()) throw new ReporterException("Нет данных для генерации отчета.");
+            if (!ReportInfo.Any())
+            {
+                throw new ReporterException("Нет данных для генерации отчета.");
+            }
             _sheetsForCurators.Clear();
             MessagesPreview.Clear();
             var coursesTask = _moodle.GetCoursesByIds(ReportInfo.Select(c => c.CourseID));
@@ -104,7 +132,10 @@ namespace ReportsGenerator
                 {
                     Debug.WriteLine("3 " + DateTime.Now);
                     int temp;
-                    if (!int.TryParse(activity.Id, out temp)) continue;
+                    if (!int.TryParse(activity.Id, out temp))
+                    {
+                        continue;
+                    }
 
                     foreach (var g in activity.Grades)
                     {
@@ -120,38 +151,38 @@ namespace ReportsGenerator
                 StringBuilder newSheet;
                 switch (rInfo.CuratorsGenerationType)
                 {
-                    case DataStructures.ReportInfo.CuratorsGenerationTypeEnum.All:
-                    case DataStructures.ReportInfo.CuratorsGenerationTypeEnum.MoodleCurators:
-                        var institutionsCurators = (from i in await courseGroupUsers
-                                                    group i by i.Institution
-                                                        into g
-                                                        select new
-                                                        {
-                                                            Institution = g.Key,
-                                                            curators = Task.Run(async () =>
-                                                            {
-                                                                Group gr = GetInstitutionGroupFromUsers(await groupsOfCourse, g.Key, rInfo.GroupName);
-                                                                return gr == null ? new List<User>() : (await _moodle.GetEnrolUsers(rInfo.CourseID, gr.Id)).Where(i => i.Roles.Any(r => curatorRoles.Contains(r.Id)));
-                                                            })
-                                                        }).ToArray();
-                        foreach (var iCurators in institutionsCurators)
+                case DataStructures.ReportInfo.CuratorsGenerationTypeEnum.All:
+                case DataStructures.ReportInfo.CuratorsGenerationTypeEnum.MoodleCurators:
+                    var institutionsCurators = (from i in await courseGroupUsers
+                                                group i by i.Institution
+                                                into g
+                                                select new
+                    {
+                        Institution = g.Key,
+                        curators = Task.Run(async () =>
                         {
-                            newSheet = _reporter.GenerateReportTable(rInfo,
-                                (await coursesTask).First(c => c.Id == rInfo.CourseID), iCurators.Institution);
-                            if (rInfo.CuratorsGenerationType == DataStructures.ReportInfo.CuratorsGenerationTypeEnum.All)
-                            {
-                                AppendSheetForCurators(Curators.Where(c => c.Institution == iCurators.Institution), caption, newSheet);
-                            }
-                            AppendSheetForCurators(await iCurators.curators, caption, newSheet);
+                            Group gr = GetInstitutionGroupFromUsers(await groupsOfCourse, g.Key, rInfo.GroupName);
+                            return gr == null ? new List<User>() : (await _moodle.GetEnrolUsers(rInfo.CourseID, gr.Id)).Where(i => i.Roles.Any(r => curatorRoles.Contains(r.Id)));
+                        })
+                    }).ToArray();
+                    foreach (var iCurators in institutionsCurators)
+                    {
+                        newSheet = _reporter.GenerateReportTable(rInfo,
+                                   (await coursesTask).First(c => c.Id == rInfo.CourseID), iCurators.Institution);
+                        if (rInfo.CuratorsGenerationType == DataStructures.ReportInfo.CuratorsGenerationTypeEnum.All)
+                        {
+                            AppendSheetForCurators(Curators.Where(c => c.Institution == iCurators.Institution), caption, newSheet);
                         }
-                        break;
-                    case DataStructures.ReportInfo.CuratorsGenerationTypeEnum.Custom:
-                        var curator = Curators.First(c => c.Email == rInfo.CuratorsEmail);
-                        newSheet = _reporter.GenerateReportTable(rInfo, (await coursesTask).First(c => c.Id == rInfo.CourseID), Curators.First(c => c.Email == rInfo.CuratorsEmail).Institution);
-                        AppendSheetForCurator(curator, caption, newSheet);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                        AppendSheetForCurators(await iCurators.curators, caption, newSheet);
+                    }
+                    break;
+                case DataStructures.ReportInfo.CuratorsGenerationTypeEnum.Custom:
+                    var curator = Curators.First(c => c.Email == rInfo.CuratorsEmail);
+                    newSheet = _reporter.GenerateReportTable(rInfo, (await coursesTask).First(c => c.Id == rInfo.CourseID), Curators.First(c => c.Email == rInfo.CuratorsEmail).Institution);
+                    AppendSheetForCurator(curator, caption, newSheet);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
                 }
                 Debug.WriteLine("6 " + DateTime.Now);
                 GenerationProgressEvent(++currentStep / stepsCount);
@@ -178,7 +209,10 @@ namespace ReportsGenerator
 
         private void AppendSheetForCurators(IEnumerable<ICurator> curators, String caption, StringBuilder newSheet)
         {
-            foreach (ICurator curator in curators) AppendSheetForCurator(curator, caption, newSheet);
+            foreach (ICurator curator in curators)
+            {
+                AppendSheetForCurator(curator, caption, newSheet);
+            }
         }
 
         private void AppendSheetForCurator(ICurator curator, String caption, StringBuilder newSheet)
@@ -199,15 +233,18 @@ namespace ReportsGenerator
         {
             var arr = institution.Split('_');
             var grnames = arr.Length == 1
-                ? new[] { String.Format("{0}_{1}", institution, commonGroupName) }
-                : new[]
-                        {
-                            String.Format("{0}[{1}]_{2}", arr[0], arr[1], commonGroupName),
-                            String.Format("{0}_{1}_{2}", arr[0], arr[1], commonGroupName)
-                        };
+                          ? new[] { String.Format("{0}_{1}", institution, commonGroupName) }
+                          : new[]
+            {
+                String.Format("{0}[{1}]_{2}", arr[0], arr[1], commonGroupName),
+                String.Format("{0}_{1}_{2}", arr[0], arr[1], commonGroupName)
+            };
             Group founded = groupsList.FirstOrDefault(g => grnames.Contains(g.Name));
-            if (founded != null) return founded;
-            //throw new ReporterException(String.Format("Не найдена  группа \"{0}\" для организации \"{1}\".", commonGroupName, institution));
+            if (founded != null)
+            {
+                return founded;
+            }
+            /// throw new ReporterException(String.Format("Не найдена  группа \"{0}\" для организации \"{1}\".", commonGroupName, institution));
             Warnings.Add(String.Format("Не найдена  группа \"{0}\" для организации \"{1}\".", commonGroupName, institution));
             return null;
         }
@@ -217,12 +254,12 @@ namespace ReportsGenerator
         private string CaptionGenerate(ReportInfo rinfo)
         {
             return String.Format("[Edu] результаты обучения сотрудников вашего РИЦ за период обучения с {0}{1}{2} по {3} {4} {5} года",
-                rinfo.StartDate.Day,
-                rinfo.StartDate.Month == rinfo.EndDate.Month ? String.Empty : " " + months[rinfo.StartDate.Month - 1],
-                rinfo.StartDate.Year == rinfo.EndDate.Year ? String.Empty : " " + rinfo.StartDate.Year,
-                rinfo.EndDate.Day,
-                months[rinfo.EndDate.Month - 1],
-                rinfo.EndDate.Year);
+                                 rinfo.StartDate.Day,
+                                 rinfo.StartDate.Month == rinfo.EndDate.Month ? String.Empty : " " + months[rinfo.StartDate.Month - 1],
+                                 rinfo.StartDate.Year == rinfo.EndDate.Year ? String.Empty : " " + rinfo.StartDate.Year,
+                                 rinfo.EndDate.Day,
+                                 months[rinfo.EndDate.Month - 1],
+                                 rinfo.EndDate.Year);
         }
 
         private MailMessage GenerateMessageContent(string tables, ICurator curator)
@@ -232,29 +269,29 @@ namespace ReportsGenerator
             email.Subject = curator.Caption;
             email.IsBodyHtml = true;
             email.Body = Template.Replace("{{tables}}", tables).Replace(
-                "{{wellcome}}",
-                String.Format("Уважаем{0} {1}", (curator.IsMan ? "ый" : "ая"), curator.FirstName));
+                             "{{wellcome}}",
+                             String.Format("Уважаем{0} {1}", (curator.IsMan ? "ый" : "ая"), curator.FirstName));
             return email;
         }
 
         public delegate void SendingProgress(double progress);
         public event SendingProgress SendingProgressEvent;
-        public async Task<Dictionary<MailMessage,string>> SendReports()
+        public async Task<Dictionary<MailMessage, string>> SendReports()
         {
             double steps = MessagesPreview.Count;
             double curStep = 0;
             var report = new Dictionary<MailMessage, string>();
             _mail.SetMailSettings(MailSettings);
             var tasks = from message in MessagesPreview
-                select new
-                {
-                    Mail = message,
-                    Task = _mail.SendMail(message)
-                };
-            foreach(var item in tasks)
+                        select new
+            {
+                Mail = message,
+                Task = _mail.SendMail(message)
+            };
+            foreach (var item in tasks)
             {
                 report.Add(item.Mail, await item.Task);
-                SendingProgressEvent(++curStep/steps);
+                SendingProgressEvent(++curStep / steps);
             }
             return report;
         }

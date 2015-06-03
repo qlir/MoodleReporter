@@ -9,8 +9,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using ReportsGenerator.Annotations;
 using ReportsGenerator.DataStructures;
+using ReportsGenerator.UserData;
 using UIReporter.AccessoryWindow;
-using UIReporter.UserData;
 using MessageBox = UIReporter.AccessoryWindow.MessageBox;
 using H = UIReporter.Helpers.Helpers;
 
