@@ -176,7 +176,7 @@ namespace ReportsGenerator.TableGenerator
             var commonAvg = CalcAVGbyInstitutions();
             foreach (var grade in orderedGrades)
             {
-                table.AddCell(commonAvg[grade.TestId].ToString(_numberFormat), GenerationSetting.Default.CellStyle);
+                table.AddCell((commonAvg.ContainsKey(grade.TestId) ? commonAvg[grade.TestId] : 0).ToString(_numberFormat), GenerationSetting.Default.CellStyle);
             }
             table.CloseRow();
 
