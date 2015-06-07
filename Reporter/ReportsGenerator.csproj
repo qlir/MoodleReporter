@@ -35,6 +35,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsvHelper">
+      <HintPath>..\packages\CsvHelper.2.13.0.0\lib\net40-client\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -69,19 +72,22 @@
     <Compile Include="TableGenerator\ReportTableGenerator.cs" />
     <Compile Include="DataStructures\ReportInfo.cs" />
     <Compile Include="ReporterException.cs" />
-    <Compile Include="Settings.Designer.cs">
+    <Compile Include="ReporterSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
+      <DependentUpon>ReporterSettings.settings</DependentUpon>
     </Compile>
-    <Compile Include="UserData\UserDataCtrl.cs" />
+    <Compile Include="UserData\CsvDataProvider.cs" />
+    <Compile Include="UserData\TemplateProvider.cs" />
+    <Compile Include="UserData\JsonDataProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="ClassDiagram1.cd" />
-    <None Include="Settings.settings">
+    <None Include="packages.config" />
+    <None Include="ReporterSettings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <LastGenOutput>ReporterSettings.Designer.cs</LastGenOutput>
     </None>
     <DesignData Include="UserData\Courses.json" />
     <DesignData Include="UserData\Curators.json" />

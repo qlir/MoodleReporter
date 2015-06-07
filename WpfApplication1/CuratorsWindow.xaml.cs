@@ -73,7 +73,7 @@ namespace UIReporter
                             reportInfo.CuratorsEmail = newValue;
                         }
                     }
-                await UserDataCtrl.SaveCurators(Curators);
+                await CsvDataProvider.SaveCurators(Curators);
                 IsActualData = true;
                 return true;
             }
@@ -94,7 +94,7 @@ namespace UIReporter
         {
             try
             {
-                var oldCourses = await UserDataCtrl.LoadCurators();
+                var oldCourses = await CsvDataProvider.LoadCurators();
                 Curators.Clear();
                 MainWindow.AddRange(Curators, oldCourses);
                 IsActualData = true;
@@ -185,15 +185,11 @@ namespace UIReporter
             }));
             if (can)
             {
-                /*var result = MessageBox.Show(curators.Length > 1 ? "Удалить кураторов?" : "Удалить куратора?", "Удаление",
-                    MessageBoxButton.YesNo);
-                if (result == MessageBoxResult.Yes)*/
                 {
                     foreach (var c in curators)
                     {
                         Curators.Remove(c);
                     }
-                    //Save();
                     H.RefreshDataGridIfNotEditing(CuratorsDG);
                 }
             }

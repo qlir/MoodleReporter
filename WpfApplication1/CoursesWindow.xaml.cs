@@ -40,7 +40,7 @@ namespace UIReporter
         {
             try
             {
-                await UserDataCtrl.SaveCourses(Courses);
+                await CsvDataProvider.SaveCourses(Courses);
                 IsActualData = true;
             }
             catch (Exception e)
@@ -53,7 +53,7 @@ namespace UIReporter
         {
             try
             {
-                var oldCourses = await UserDataCtrl.LoadCourses();
+                var oldCourses = await CsvDataProvider.LoadCourses();
                 Courses.Clear();
                 MainWindow.AddRange(Courses, oldCourses);
                 IsActualData = true;

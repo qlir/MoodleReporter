@@ -100,26 +100,45 @@ namespace UIReporter
         {
             /*ProgressDialog.ShowDialog(null, "Запуск...", async (ProgressDialog pd) =>
             {*/
-                try
-                {
-                    var coursesTask = loadCources();
-                    var reportIndoTask = UserDataCtrl.LoadReportInfo();
-                    var curatorsTask = UserDataCtrl.LoadCurators();
-                    Courses.Clear();
-                    ReportsInfos.Clear();
-                    Curators.Clear();
-                    ReporterSeting();
-                    AddRange(Courses, await coursesTask);
-                    AddRange(ReportsInfos, await reportIndoTask);
-                    AddRange(Curators, await curatorsTask);
-                    ReportInfoIsActual = true;
-                }
-                catch (Exception e)
-                {
-                    ErrorWindow.ShowError(e);
-                }
+            try
+            {
+                var coursesTask = CsvDataProvider.LoadCourses();
+                var reportIndoTask = CsvDataProvider.LoadReportInfo();
+                var curatorsTask = CsvDataProvider.LoadCurators();
+                Courses.Clear();
+                ReportsInfos.Clear();
+                Curators.Clear();
+                ReporterSeting();
+                AddRange(Courses, await coursesTask);
+                AddRange(ReportsInfos, await reportIndoTask);
+                AddRange(Curators, await curatorsTask);
 
-           /* });*/
+                // TODO: remove. need for migration from json to csv.
+                #region TODO:REMOVE
+                if (!Courses.Any())
+                {
+                    AddRange(Courses, await JsonDataProvider.LoadCourses());
+                    CsvDataProvider.SaveCourses(Courses);
+                }
+                if (!Curators.Any())
+                {
+                    AddRange(Curators, await JsonDataProvider.LoadCurators());
+                    CsvDataProvider.SaveCurators(Curators);
+                }
+                if (!ReportsInfos.Any())
+                {
+                    AddRange(ReportsInfos, await JsonDataProvider.LoadReportInfo());
+                    CsvDataProvider.SaveReportInfo(ReportsInfos);
+                }
+                #endregion
+                ReportInfoIsActual = true;
+            }
+            catch (Exception e)
+            {
+                ErrorWindow.ShowError(e);
+            }
+
+            /* });*/
         }
 
         public static void AddRange<T>(IList<T> observableCollection, IEnumerable<T> enumerable)
@@ -128,11 +147,6 @@ namespace UIReporter
             {
                 observableCollection.Add(element);
             }
-        }
-
-        private async Task<IEnumerable<Course>> loadCources()
-        {
-            return await UserDataCtrl.LoadCourses();
         }
 
         private async Task<IEnumerable<Group>> GetGroups(int courseid)
@@ -218,7 +232,7 @@ namespace UIReporter
         private async void SaveReportInfo()
         {
             Mouse.OverrideCursor = Cursors.Wait;
-            await UserDataCtrl.SaveReportInfo(ReportsInfos);
+            await CsvDataProvider.SaveReportInfo(ReportsInfos);
             ReportInfoIsActual = true;
             Mouse.OverrideCursor = null;
         }
@@ -233,7 +247,7 @@ namespace UIReporter
             try
             {
                 Mouse.OverrideCursor = Cursors.Wait;
-                var reportIndoTask = UserDataCtrl.LoadReportInfo();
+                var reportIndoTask = CsvDataProvider.LoadReportInfo();
                 ReportsInfos.Clear();
                 AddRange(ReportsInfos, await reportIndoTask);
                 ReloadDataGridItems();
@@ -262,7 +276,7 @@ namespace UIReporter
                 _reporter.GenerationProgressEvent += progressHandler;
                 try
                 {
-                    _reporter.Template = await UserDataCtrl.LoadTemplate();
+                    _reporter.Template = await TemplateProvider.LoadTemplate();
                     await GenerateReportAsync();
                     isSuccess = true;
                 }

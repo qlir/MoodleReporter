@@ -11,7 +11,7 @@
 
     public class ReportTableGenerator
     {
-        private static readonly int NumberToRound = Settings.Default.AccuracyGrades;
+        private static readonly int NumberToRound = ReporterSettings.Default.AccuracyGrades;
 
         private List<Item> items = new List<Item>();
 

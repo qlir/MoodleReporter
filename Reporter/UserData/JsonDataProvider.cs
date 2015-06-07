@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ReportsGenerator.UserData
 {
-    public class UserDataCtrl
+    public class JsonDataProvider
     {
         private const string UserDataDirrectory = "UserData/";
         private const string CuratorsJsonPath = "Curators.json";
@@ -15,31 +15,28 @@ namespace ReportsGenerator.UserData
         private const string CoursesPath = "Courses.json";
         private const string MailTemplatePath = "Template.html";
 
-        public static async Task<IEnumerable<Curator>> LoadCurators()
+        public static async Task<List<Curator>> LoadCurators()
         {
-            return await LoadJsonFileAs<IEnumerable<Curator>>(CuratorsJsonPath) ?? new Curator[0];
+            return await LoadJsonFileAs<List<Curator>>(CuratorsJsonPath);
         }
 
-        public static async Task<IEnumerable<ReportInfo>> LoadReportInfo()
+        public static async Task<List<ReportInfo>> LoadReportInfo()
         {
-            return await LoadJsonFileAs<IEnumerable<ReportInfo>>(ReportInfoJsonPath) ?? new ReportInfo[0];
+            return await LoadJsonFileAs<List<ReportInfo>>(ReportInfoJsonPath);
         }
 
-        public static async Task<IEnumerable<Course>> LoadCourses()
+        public static async Task<List<Course>> LoadCourses()
         {
-            return await LoadJsonFileAs<IEnumerable<Course>>(CoursesPath) ?? new Course[0];
+            return await LoadJsonFileAs<List<Course>>(CoursesPath);
         }
 
-        private static async Task<T> LoadJsonFileAs<T>(string fileName)
+        private static async Task<T> LoadJsonFileAs<T>(string fileName) where T : new()
         {
             string json;
             string filePath = UserDataDirrectory + fileName;
             if (!File.Exists(filePath))
             {
-                if (!Directory.Exists(UserDataDirrectory))
-                {
-                    Directory.CreateDirectory(UserDataDirrectory);
-                }
+                return new T();
             }
             using (var file = new StreamReader(File.Open(filePath, FileMode.OpenOrCreate)))
             {
@@ -66,25 +63,25 @@ namespace ReportsGenerator.UserData
             }
         }
 
-        public static async Task SaveCurators(IEnumerable<Curator> curators)
+        public static async Task SaveCurators(List<Curator> curators)
         {
             var json = JsonConvert.SerializeObjectAsync(curators);
             await WriteStringToFile(CuratorsJsonPath, await json);
         }
 
-        public static async Task SaveCourses(IEnumerable<Course> courses)
+        public static async Task SaveCourses(List<Course> courses)
         {
             var json = JsonConvert.SerializeObjectAsync(courses);
             await WriteStringToFile(CoursesPath, await json);
         }
 
-        public static async Task SaveReportInfo(IEnumerable<ReportInfo> reportInfo)
+        public static async Task SaveReportInfo(List<ReportInfo> reportInfo)
         {
             var json = JsonConvert.SerializeObjectAsync(reportInfo);
             await WriteStringToFile(ReportInfoJsonPath, await json);
         }
         /*
-                public async Task SaveMails(IEnumerable<MailMessage> message)
+                public async Task SaveMails(List<MailMessage> message)
                 {
 
                 }*/

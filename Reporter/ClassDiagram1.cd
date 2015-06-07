@@ -8,14 +8,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ReportsGenerator.DataStructures.Course">
-    <Position X="0.5" Y="6.25" Width="1.5" />
+    <Position X="2.25" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
       <FileName>DataStructures\Course.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ReportsGenerator.DataStructures.Curator" BaseTypeListCollapsed="true">
-    <Position X="4" Y="0.5" Width="2" />
+    <Position X="4" Y="5.25" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
@@ -25,10 +25,10 @@
       <HashCode>AAAAGEAAACAAAACIYAAAIAAAgAAAAAAACAAAAAAAAAg=</HashCode>
       <FileName>DataStructures\Curator.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="ReportsGenerator.DataStructures.Grade">
-    <Position X="0.5" Y="4.75" Width="1.5" />
+    <Position X="0.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAgAAAAAAA=</HashCode>
       <FileName>DataStructures\Grade.cs</FileName>
@@ -42,7 +42,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ReportsGenerator.DataStructures.ReportInfo" BaseTypeListCollapsed="true">
-    <Position X="6.25" Y="0.5" Width="2" />
+    <Position X="6.75" Y="2.25" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
@@ -60,22 +60,15 @@
       <HashCode>AAQAAAAAAABAAAAAIQAAAAAggEAAAAQAIBAAAEAAAAE=</HashCode>
       <FileName>DataStructures\ReportInfo.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="1.3" Collapsed="true" />
-  </Class>
-  <Class Name="ReportsGenerator.DataStructures.Time">
-    <Position X="2.25" Y="2" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAgAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>DataStructures\Time.cs</FileName>
-    </TypeIdentifier>
+    <Lollipop Position="1.3" />
   </Class>
   <Class Name="ReportsGenerator.DataStructures.User" BaseTypeListCollapsed="true">
-    <Position X="2.25" Y="4" Width="1.5" />
+    <Position X="2.25" Y="5.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
     <NestedTypes>
-      <Class Name="ReportsGenerator.DataStructures.User.Role" Collapsed="true">
+      <Class Name="ReportsGenerator.DataStructures.User.Role">
         <TypeIdentifier>
           <NewMemberFileName>DataStructures\User.cs</NewMemberFileName>
         </TypeIdentifier>
@@ -85,10 +78,10 @@
       <HashCode>AAACCEAAACAAAIAAQAAAAAAAAgAAAAAACQAAAAAAAAg=</HashCode>
       <FileName>DataStructures\User.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.248" Collapsed="true" />
+    <Lollipop Position="0.248" />
   </Class>
   <Class Name="ReportsGenerator.Mail.Mail">
-    <Position X="11.5" Y="0.5" Width="1.75" />
+    <Position X="3.25" Y="10" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -98,24 +91,24 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ReportsGenerator.Mail.MailSettings">
-    <Position X="4" Y="4" Width="2" />
+    <Position X="4" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAACAAAAAAAAAAACACAAAICAAAAAAAAAAA=</HashCode>
       <FileName>Mail\MailSettings.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ReportsGenerator.Moodle.MoodleCtrl">
-    <Position X="8.75" Y="0.5" Width="2.25" />
+    <Position X="0.5" Y="10" Width="2.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAIAAAAAACAAAAEFAAAACIAAAAABACgAEABEAg=</HashCode>
+      <HashCode>AAAAAAAIAAAAAAAAAAAElAAAAAIAAAAADACgAEABEAg=</HashCode>
       <FileName>Moodle\MoodleCtrl.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ReportsGenerator.TableGenerator.HTMLTableGenerator">
-    <Position X="11.5" Y="2.75" Width="2" />
+    <Position X="3" Y="12" Width="2.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -125,7 +118,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ReportsGenerator.TableGenerator.ReportTableGenerator">
-    <Position X="13.75" Y="2.75" Width="2" />
+    <Position X="5.5" Y="10" Width="2.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -141,18 +134,35 @@
       <FileName>TableGenerator\ReportTableGenerator.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ReportsGenerator.UserData.UserDataCtrl">
-    <Position X="8.75" Y="4.5" Width="2.25" />
+  <Class Name="ReportsGenerator.UserData.CsvDataProvider">
+    <Position X="3" Y="15.5" Width="2.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
+    <NestedTypes>
+      <Class Name="ReportsGenerator.UserData.CsvDataProvider.ReportInfoCsvMap" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>UserData\CsvDataProvider.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="ReportsGenerator.UserData.CsvDataProvider.CuratorCsvMap" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>UserData\CsvDataProvider.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="ReportsGenerator.UserData.CsvDataProvider.CourseCsvMap" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>UserData\CsvDataProvider.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgIAABAAAAMKAAFAAAQAAIAhAAAAAAAIA=</HashCode>
-      <FileName>UserData\UserDataCtrl.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAACAAAEKAAFAAIQAAZAAAIAAAAAIA=</HashCode>
+      <FileName>UserData\CsvDataProvider.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ReportsGenerator.Reporter">
-    <Position X="16" Y="0.5" Width="2.25" />
+    <Position X="5.5" Y="12.75" Width="2.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -174,7 +184,7 @@
     </TypeIdentifier>
   </Class>
   <Interface Name="ReportsGenerator.DataStructures.ICurator">
-    <Position X="0.5" Y="2.75" Width="1.5" />
+    <Position X="0.5" Y="5.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAACEAAACAAAAAAQAAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
       <FileName>DataStructures\ICurator.cs</FileName>

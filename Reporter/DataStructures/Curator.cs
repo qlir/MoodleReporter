@@ -1,36 +1,15 @@
-﻿namespace ReportsGenerator.DataStructures
+﻿using CsvHelper.Configuration;
+
+namespace ReportsGenerator.DataStructures
 {
-    using System;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
-    using System.Windows.Forms;
-
     using Newtonsoft.Json;
 
     public class Curator : ICurator, INotifyPropertyChanged
     {
         private string _gender;
 
-        /*        // override object.Equals
-        public override bool Equals(object obj)
-        {
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
-            return GetHashCode().Equals(obj.GetHashCode());
-        }
-
-        public override int GetHashCode()
-        {
-            Course c = null;
-            return String.Format("{0}.{1}.{2}.{3}.{4}",
-                (Institution ?? String.Empty).GetHashCode(),
-                (Email ?? String.Empty).GetHashCode(),
-                (FullName ?? String.Empty).GetHashCode(),
-                (City ?? String.Empty).GetHashCode(),
-                (Gender ?? String.Empty).GetHashCode()).GetHashCode();
-        }*/
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string Caption

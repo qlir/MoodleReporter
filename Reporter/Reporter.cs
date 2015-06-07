@@ -184,7 +184,6 @@ namespace ReportsGenerator
                 default:
                     throw new ArgumentOutOfRangeException();
                 }
-                Debug.WriteLine("6 " + DateTime.Now);
                 GenerationProgressEvent(++currentStep / stepsCount);
             }
 
