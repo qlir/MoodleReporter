@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using ReportsGenerator.Settings;
 
 namespace ReportsGenerator.UserData
 {
@@ -22,6 +23,9 @@ namespace ReportsGenerator.UserData
         static CsvDataProvider()
         {
             CsvConfiguration = new CsvConfiguration();
+        }
+        static void UpdateConfiguration()
+        {
             CsvConfiguration.HasHeaderRecord = true;
             CsvConfiguration.IgnoreHeaderWhiteSpace = true;
             string delimiter = ReporterSettings.Default.CsvDelimiter;
@@ -52,6 +56,7 @@ namespace ReportsGenerator.UserData
 
         private static async Task<List<T>> ReadCsvAsync<T>(string fileName)
         {
+            UpdateConfiguration();
             if (!File.Exists(UserDataDirrectory + fileName)) return null;
 
             return await Task.Run(() =>
@@ -69,6 +74,7 @@ namespace ReportsGenerator.UserData
 
         public static async Task WriteToCsvAsync<T>(string fileName, IEnumerable<T> items)
         {
+            UpdateConfiguration();
             await Task.Run(() =>
             {
                 using (var textWriter =

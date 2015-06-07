@@ -86,15 +86,8 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAEAAEAAAAAAAAgAAAAAAAACAAAAAAAAAAABAAAAAA=</HashCode>
+      <HashCode>AAAAAAEAAAAAAAAgAAAAAAAACAAAAAAAAAAABAAAQAA=</HashCode>
       <FileName>Mail\Mail.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ReportsGenerator.Mail.MailSettings">
-    <Position X="4" Y="0.5" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAACAACAAAAAAAAAAACACAAAICAAAAAAAAAAA=</HashCode>
-      <FileName>Mail\MailSettings.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ReportsGenerator.Moodle.MoodleCtrl">

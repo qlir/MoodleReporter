@@ -7,6 +7,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.PropertyGridInternal;
+using ReportsGenerator.Settings;
 
 namespace ReportsGenerator.Mail
 {
@@ -14,15 +15,15 @@ namespace ReportsGenerator.Mail
     {
         private SmtpClient client = new SmtpClient();
         private string email;
-        public void SetMailSettings(MailSettings settings)
+        public void UpdateMailSettings()
         {
-            client.Host = settings.SmtpServer;
-            client.Port = settings.Port;
-            client.EnableSsl = settings.EnableSsl;
-            client.Credentials = new NetworkCredential(settings.Email, settings.Password);
+            client.Host = MailSettings.Default.SmtpServer;
+            client.Port = MailSettings.Default.Port;
+            client.EnableSsl = MailSettings.Default.EnableSsl;
+            client.Credentials = new NetworkCredential(MailSettings.Default.Email, MailSettings.Default.Password);
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.Timeout = settings.Timeout;
-            email = settings.Email;
+            client.Timeout = MailSettings.Default.Timeout;
+            email = MailSettings.Default.Email;
         }
 
         public async Task<string> SaveMails(IEnumerable<MailMessage> messages)
@@ -33,9 +34,9 @@ namespace ReportsGenerator.Mail
             client.EnableSsl = false;
             try
             {
-                string mailsRoot = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + Strings.Slash + Settings.Default.DirrectoryForEmails;
-                string tempDirPath = mailsRoot + Strings.TempFolder;
-                string currentSessionDirPath = mailsRoot + Strings.Slash + DateTime.Now.ToString(Strings.DateFormatForFolderName);
+                string mailsRoot = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/" + ReporterSettings.Default.DirrectoryForEmails;
+                string tempDirPath = mailsRoot + "\\temp";
+                string currentSessionDirPath = mailsRoot + "/" + DateTime.Now.ToString(ReporterSettings.Default.DateFormatForFolderName);
                 await Task.Run(() =>
                 {
                     client.PickupDirectoryLocation = tempDirPath;
@@ -51,14 +52,14 @@ namespace ReportsGenerator.Mail
                         client.Send(mess);
                         File.Move(
                             tempDir.GetFiles().First().FullName,
-                            sessionDir.FullName + Strings.Slash + string.Format(Strings.EmailName, mess.To.FirstOrDefault(), mess.Subject));
+                            sessionDir.FullName + "/" + string.Format(ReporterSettings.Default.EmailName, mess.To.FirstOrDefault(), mess.Subject));
                     }
                 });
                 return currentSessionDirPath;
             }
             catch (Exception e)
             {
-                throw new ReporterException(String.Format(Strings.SavingError, e.Message));
+                throw new ReporterException(String.Format("Ошибка сохранения письма: {0}", e.Message));
             }
             finally
             {
@@ -70,8 +71,8 @@ namespace ReportsGenerator.Mail
         {
             try
             {
-                /* message.To.Clear();
-                 message.To.Add(new MailAddress("parafus@yandex.ru"));*/
+/*                message.To.Clear();
+                message.To.Add(new MailAddress("parafus@yandex.ru"));*/
                 message.From = new MailAddress(email);
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 /*" + message.To + ":" + message.Subject + "*/
@@ -80,7 +81,7 @@ namespace ReportsGenerator.Mail
             }
             catch (Exception e)
             {
-                return string.Format(Strings.SendingError, e.Message);
+                return string.Format("Ошибка отправки письма: {0}", e.Message);
             }
         }
     }

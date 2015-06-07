@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ReportsGenerator {
+namespace ReportsGenerator.Settings {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -20,18 +20,6 @@ namespace ReportsGenerator {
         public static ReporterSettings Default {
             get {
                 return defaultInstance;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2")]
-        public int AccuracyGrades {
-            get {
-                return ((int)(this["AccuracyGrades"]));
-            }
-            set {
-                this["AccuracyGrades"] = value;
             }
         }
         
@@ -68,6 +56,30 @@ namespace ReportsGenerator {
             }
             set {
                 this["CsvDelimiter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("yyyy-mm-dd HH.mm.ss")]
+        public string DateFormatForFolderName {
+            get {
+                return ((string)(this["DateFormatForFolderName"]));
+            }
+            set {
+                this["DateFormatForFolderName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("{0}-{1}.eml")]
+        public string EmailName {
+            get {
+                return ((string)(this["EmailName"]));
+            }
+            set {
+                this["EmailName"] = value;
             }
         }
     }

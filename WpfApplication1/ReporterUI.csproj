@@ -111,27 +111,29 @@
     <Compile Include="CoursesWindow.xaml.cs">
       <DependentUpon>CoursesWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FullSettings.xaml.cs">
+      <DependentUpon>FullSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\Helpers.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="AccessoryWindow\ProgressDialog.xaml.cs">
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="SettingsWindow.xaml.cs">
-      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    <Compile Include="SettingsViews\SystemDataSettingGrid.xaml.cs">
+      <DependentUpon>SystemDataSettingGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings\Mail.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Mail.settings</DependentUpon>
+    <Compile Include="SettingsViews\GenerationSettingGrid.xaml.cs">
+      <DependentUpon>GenerationSettingGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings\Moodle.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Moodle.settings</DependentUpon>
+    <Compile Include="SettingsViews\BaseSettingsGrid.xaml.cs">
+      <DependentUpon>BaseSettingsGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="Previewer.xaml.cs">
       <DependentUpon>Previewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsViews\SettingsField.xaml.cs">
+      <DependentUpon>SettingsField.xaml</DependentUpon>
     </Compile>
     <Compile Include="Validations\Validations.cs" />
     <Page Include="AccessoryWindow\ErrorWindow.xaml">
@@ -151,6 +153,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="CoursesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FullSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -174,7 +180,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SettingsWindow.xaml">
+    <Page Include="SettingsViews\SystemDataSettingGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingsViews\GenerationSettingGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingsViews\BaseSettingsGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsViews\SettingsField.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -203,14 +221,6 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="ReporterUI_TemporaryKey.pfx" />
-    <None Include="Settings\Mail.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Mail.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Settings\Moodle.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Moodle.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

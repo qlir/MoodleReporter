@@ -67,7 +67,7 @@ namespace ReportsGenerator.DataStructures
             {
                 if (Gender != null)
                 {
-                    return Gender == Strings.M;
+                    return Gender == "M";
                 }
                 if (string.IsNullOrEmpty(FirstName))
                 {
@@ -78,7 +78,7 @@ namespace ReportsGenerator.DataStructures
                 {
                     return true;
                 }
-                return (s.Length > 1 ? s[1] : s[0])[s.Length - 1] == Strings.PatronymicLastLeter;
+                return (s.Length > 1 ? s[1] : s[0])[s.Length - 1] == 'ч';
             }
         }
 

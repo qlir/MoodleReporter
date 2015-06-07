@@ -8,24 +8,22 @@
     class HTMLTableGenerator
     {
         private const string CaptionClose = "</caption>";
-        private const string CaptionOpen = "<caption>";
+        private const string CaptionOpen = "<caption style='{0}'>";
         private const string ColgroupClose = "</colgroup>";
         private const string ColgroupOpen = "<colgroup>";
         private const string ColumnStyle = @"<col span='{0}' style='{1}'></colgroup>";
         private const string TableClose = "</table>";
-        private const string TableOpen = "<table style=' margin: 10px; border-collapse: collapse; border: 2px solid dimgray;'>";
+        private const string TableOpen = "<table style='{0}'>";
         private const string TdClose = "</td>";
-        private const string TdOpen = "<td style='border-collapse: collapse;padding:5px 5px; border: 2px solid dimgray;{0}' colspan='{1}'>";
-        private const string ThClose = "</th>";
-        private const string ThOpen = "<th style='border-collapse: collapse;padding:5px 5px; word-wrap: break-word; border: 2px solid dimgray;'>";
+        private const string TdOpen = "<td style='border-collapse: collapse; border: 2px solid dimgray;{0}' colspan='{1}'>";
         private const string TrClose = "</tr>";
         private const string TrOpen = "<tr style='{0}'>";
 
         readonly StringBuilder _table = new StringBuilder();
 
-        public void AddCaption(string caption)
+        public void AddCaption(string caption, string style = "")
         {
-            _table.Append(CaptionOpen).Append(caption).Append(CaptionClose);
+            _table.AppendFormat(CaptionOpen, style).Append(caption).Append(CaptionClose);
         }
 
         public void AddCell(string value, string style, int columnSpan)
@@ -52,23 +50,23 @@
         {
             _table.AppendFormat(ColumnStyle, span, style);
         }
+        /*
+                public void AddHeaderRow(IEnumerable<string> value)
+                {
+                    _table.Append(TrOpen);
+                    foreach (var v in value)
+                    {
+                        _table.Append(ThOpen).Append(v).Append(ThClose);
+                    }
+                    _table.Append(TrClose);
+                }*/
 
-        public void AddHeaderRow(IEnumerable<string> value)
+        public void AddRow(IEnumerable<string> value, string style = "", string cellStyle = "")
         {
-            _table.Append(TrOpen);
+            OpenRow(style);
             foreach (var v in value)
             {
-                _table.Append(ThOpen).Append(v).Append(ThClose);
-            }
-            _table.Append(TrClose);
-        }
-
-        public void AddRow(IEnumerable<string> value)
-        {
-            OpenRow();
-            foreach (var v in value)
-            {
-                _table.AppendFormat(TdOpen, string.Empty, 1).Append(v).Append(TdClose);
+                _table.AppendFormat(TdOpen, cellStyle, 1).Append(v).Append(TdClose);
             }
             CloseRow();
         }
@@ -88,10 +86,10 @@
             _table.Append(TrClose);
         }
 
-        public void Init()
+        public void Init(string style = "")
         {
             _table.Clear();
-            _table.Append(TableOpen);
+            _table.AppendFormat(TableOpen, style);
         }
 
         public void OpenColGroup()

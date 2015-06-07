@@ -59,7 +59,7 @@
             get
             {
                 var trimmend = FirstName.Trim();
-                return trimmend[trimmend.Length - 1] == Strings.PatronymicLastLeter;
+                return trimmend[trimmend.Length - 1] == 'ч';
             }
         }
 

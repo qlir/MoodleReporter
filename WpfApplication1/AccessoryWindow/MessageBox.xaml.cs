@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Linq;
+using System.Windows;
 
 namespace UIReporter.AccessoryWindow
 {
@@ -38,10 +40,10 @@ namespace UIReporter.AccessoryWindow
             Result = MessageBoxResult.Cancel;
         }
 
-        public static MessageBoxResult Show(Window ownerWindow, string messageBoxText, string caption = null, MessageBoxButton button = MessageBoxButton.OK)
+        public static MessageBoxResult Show(Object ownerWindow, string messageBoxText, string caption = null, MessageBoxButton button = MessageBoxButton.OK)
         {
             var mb = new MessageBox(messageBoxText, caption, button);
-            mb.Owner = ownerWindow;
+            mb.Owner = Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive);
             mb.ShowDialog();
             return mb.Result;
         }

@@ -1,26 +1,27 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Windows;
-using UIReporter.Settings;
+using System.Windows.Controls;
+using ReportsGenerator.Settings;
 using MessageBox = UIReporter.AccessoryWindow.MessageBox;
 
-namespace UIReporter
+namespace UIReporter.SettingsViews
 {
     /// <summary>
     /// Interaction logic for SettingsWindow.xaml
     /// </summary>
-    public partial class SettingsWindow : Window
+    public partial class BaseSettingsGrid : Grid
     {
 
-        public SettingsWindow()
+        public BaseSettingsGrid()
         {
             InitializeComponent();
-            Password.Password = Mail.Default.Password;
+            Password.Password = MailSettings.Default.Password;
         }
 
         private void Save_OnClick(object sender, RoutedEventArgs e)
         {
-            Mail mail = Mail.Default;
+            MailSettings mail = MailSettings.Default;
             mail.Email = mail.Email.Trim();
             if (!Regex.IsMatch(mail.Email,
                 @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z",
@@ -43,7 +44,7 @@ namespace UIReporter
                 return;
             }
 
-            Moodle moodle = Moodle.Default;
+            MoodleSettings moodle = MoodleSettings.Default;
             moodle.Token = moodle.Token.Trim();
             if (string.IsNullOrEmpty(moodle.Token))
             {
@@ -57,9 +58,9 @@ namespace UIReporter
                 return;
             }
 
-            Mail.Default.Save();
-            Moodle.Default.Save();
-            Close();
+            MailSettings.Default.Save();
+            MoodleSettings.Default.Save();
+           // Close();
         }
 
         private void TextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)

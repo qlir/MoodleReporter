@@ -1,0 +1,16 @@
+﻿<Window x:Class="UIReporter.FullSettings"
+        Name="Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:uiReporter="clr-namespace:UIReporter"
+        Title="Настройки" Width="800" Height="500"
+        Style="{StaticResource WindowStyle}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <ListBox x:Name="ListBox" Grid.Column="0" Grid.Row="0" DisplayMemberPath="Key" ItemsSource="{Binding SettingItems, ElementName=Window, Mode=OneWay}"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="1"  Grid.Row="0" Content="{Binding ElementName=ListBox, Path=SelectedItem.Value}"/>
+    </Grid>
+</Window>

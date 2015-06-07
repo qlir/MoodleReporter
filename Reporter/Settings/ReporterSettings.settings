@@ -1,10 +1,7 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ReportsGenerator" GeneratedClassName="ReporterSettings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ReportsGenerator.Settings" GeneratedClassName="ReporterSettings">
   <Profiles />
   <Settings>
-    <Setting Name="AccuracyGrades" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2</Value>
-    </Setting>
     <Setting Name="DirrectoryForEmails" Type="System.String" Scope="User">
       <Value Profile="(Default)">MoodleReporter</Value>
     </Setting>
@@ -13,6 +10,12 @@
     </Setting>
     <Setting Name="CsvDelimiter" Type="System.String" Scope="User">
       <Value Profile="(Default)">;</Value>
+    </Setting>
+    <Setting Name="DateFormatForFolderName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">yyyy-mm-dd HH.mm.ss</Value>
+    </Setting>
+    <Setting Name="EmailName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">{0}-{1}.eml</Value>
     </Setting>
   </Settings>
 </SettingsFile>

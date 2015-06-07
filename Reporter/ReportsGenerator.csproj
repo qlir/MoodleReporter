@@ -58,7 +58,21 @@
     <Compile Include="DataStructures\Group.cs" />
     <Compile Include="DataStructures\Grade.cs" />
     <Compile Include="GlobalVariables.cs" />
-    <Compile Include="Mail\MailSettings.cs" />
+    <Compile Include="Settings\GenerationSetting.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>GenerationSetting.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\MailSettings.Designer.cs">
+      <DependentUpon>MailSettings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Settings\MoodleSettings.Designer.cs">
+      <DependentUpon>MoodleSettings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Reporter.cs" />
@@ -72,7 +86,7 @@
     <Compile Include="TableGenerator\ReportTableGenerator.cs" />
     <Compile Include="DataStructures\ReportInfo.cs" />
     <Compile Include="ReporterException.cs" />
-    <Compile Include="ReporterSettings.Designer.cs">
+    <Compile Include="Settings\ReporterSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>ReporterSettings.settings</DependentUpon>
@@ -84,8 +98,20 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="ClassDiagram1.cd" />
+    <None Include="Settings\GenerationSetting.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>GenerationSetting.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Settings\MailSettings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>MailSettings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Settings\MoodleSettings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>MoodleSettings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
-    <None Include="ReporterSettings.settings">
+    <None Include="Settings\ReporterSettings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>ReporterSettings.Designer.cs</LastGenOutput>
     </None>

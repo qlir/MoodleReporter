@@ -7,7 +7,7 @@
         >
     <Grid DataContext="{Binding ElementName=Window}" Margin="3">
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Border Padding="3" BorderThickness="2,2,2,2" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{StaticResource TextBoxBackgroundBrush}">
@@ -37,9 +37,13 @@
                 <Label FontWeight="Bold">Получатель:</Label>
                 <TextBlock VerticalAlignment="Center" Text="{Binding Path=DisplayedMessage.To, StringFormat={}{0}}" ></TextBlock>
             </StackPanel>
-            <StackPanel Margin="2"  Orientation="Horizontal">
+            <StackPanel   Orientation="Horizontal">
                 <Label FontWeight="Bold">Тема:</Label>
                 <TextBlock VerticalAlignment="Center" Text="{Binding Path=DisplayedMessage.Subject}" />
+            </StackPanel>   
+            <StackPanel Orientation="Horizontal">
+                <Label FontWeight="Bold">CC:</Label>
+                <TextBlock VerticalAlignment="Center" Text="{Binding Path=DisplayedMessage.CC , StringFormat={}{0}}" />
             </StackPanel>
         </StackPanel>
         <Border Grid.Row="1" BorderBrush="#49FFFFFF" BorderThickness="3,3,0,0">

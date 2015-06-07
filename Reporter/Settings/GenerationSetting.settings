@@ -1,0 +1,81 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ReportsGenerator.Settings" GeneratedClassName="GenerationSetting">
+  <Profiles />
+  <Settings>
+    <Setting Name="CC" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="TableTitle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Результаты {0}-й недели обучения по курсу "{1}"</Value>
+    </Setting>
+    <Setting Name="FioColumnTite" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ФИО</Value>
+    </Setting>
+    <Setting Name="InstitutionColumnTitle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Учреждение  (Организация)</Value>
+    </Setting>
+    <Setting Name="PassedColumnStyle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">background-color:#ffeeee;</Value>
+    </Setting>
+    <Setting Name="PassedGradeRowStyle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">color:brown;font-weight:bold;</Value>
+    </Setting>
+    <Setting Name="PassedGradeRowHeader" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Проходной балл</Value>
+    </Setting>
+    <Setting Name="NumberFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0.00</Value>
+    </Setting>
+    <Setting Name="AVGbyInstitutionRowStyle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">font-weight:bold;</Value>
+    </Setting>
+    <Setting Name="AVGbyInstitutionRowHeader" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Среднее по РИЦ</Value>
+    </Setting>
+    <Setting Name="AVGbyInstitutionsRowStyle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">font-weight:bold;color:red;</Value>
+    </Setting>
+    <Setting Name="AVGbyInstitutionsRowHeader" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Среднее по всем РИЦам</Value>
+    </Setting>
+    <Setting Name="ProgressRowStyle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">font-weight:bold;</Value>
+    </Setting>
+    <Setting Name="ProgressRowHeader" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Процент успевающих</Value>
+    </Setting>
+    <Setting Name="GradesRowsStyle" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MailSubject" Type="System.String" Scope="User">
+      <Value Profile="(Default)">[Edu] результаты обучения сотрудников вашего РИЦ за период обучения с {0} по {1} года</Value>
+    </Setting>
+    <Setting Name="TagToTablesPaste" Type="System.String" Scope="User">
+      <Value Profile="(Default)">{{tables}}</Value>
+    </Setting>
+    <Setting Name="TagToWelcomePaste" Type="System.String" Scope="User">
+      <Value Profile="(Default)">{{welcome}}</Value>
+    </Setting>
+    <Setting Name="Welcome" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Уважаем{0} {1}</Value>
+    </Setting>
+    <Setting Name="WelcomeMalePostfix" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ый</Value>
+    </Setting>
+    <Setting Name="WelcomeFemalePostfix" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ая</Value>
+    </Setting>
+    <Setting Name="TableStyle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">margin: 10px; border-collapse: collapse; border: 2px solid dimgray;</Value>
+    </Setting>
+    <Setting Name="CaptionStyle" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="HeadersColumnsStyle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">font-weight:bold;text-align: center;</Value>
+    </Setting>
+    <Setting Name="CellStyle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">padding:5px;</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

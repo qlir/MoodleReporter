@@ -14,9 +14,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using ReportsGenerator.Settings;
 using ReportsGenerator.UserData;
 using UIReporter.AccessoryWindow;
 using UIReporter.Annotations;
+using UIReporter.Properties;
 using ComboBox = System.Windows.Controls.ComboBox;
 using Group = ReportsGenerator.DataStructures.Group;
 using MessageBox = UIReporter.AccessoryWindow.MessageBox;
@@ -80,17 +82,6 @@ namespace UIReporter
         {
             _reporter = new Reporter
             {
-                MailSettings = new MailSettings
-                {
-                    Email = Settings.Mail.Default.Email,
-                    EnableSsl = Settings.Mail.Default.EnableSsl,
-                    Password = Settings.Mail.Default.Password,
-                    Port = Settings.Mail.Default.Port,
-                    SmtpServer = Settings.Mail.Default.SmtpServer,
-                    Timeout = Settings.Mail.Default.Timeout
-                },
-                Token = Settings.Moodle.Default.Token,
-                MoodleServer = Settings.Moodle.Default.Server,
                 ReportInfo = ReportsInfos,
                 Curators = Curators
             };
@@ -379,7 +370,8 @@ namespace UIReporter
 
         private void Settings_OnClick(object sender, RoutedEventArgs e)
         {
-            new SettingsWindow().ShowDialog();
+            //new SettingsWindow().ShowDialog();
+            new FullSettings().ShowDialog();
             ReporterSeting();
         }
 
