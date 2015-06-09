@@ -108,8 +108,8 @@ namespace UIReporter
                 #region TODO:REMOVE
                 if (!Courses.Any())
                 {
-                    AddRange(Courses, await JsonDataProvider.LoadCourses());
                     CsvDataProvider.SaveCourses(Courses);
+                    AddRange(Courses, await JsonDataProvider.LoadCourses());
                 }
                 if (!Curators.Any())
                 {

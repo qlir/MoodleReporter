@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportsGenerator", "Reporter\ReportsGenerator.csproj", "{3CD09092-5AB9-4015-8055-86D17BCE8302}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReporterUI", "WpfApplication1\ReporterUI.csproj", "{C2EB5AB3-E7AE-44B2-8BCC-1F4D1C010E7B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReporterUI", "ReporterUI\ReporterUI.csproj", "{C2EB5AB3-E7AE-44B2-8BCC-1F4D1C010E7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

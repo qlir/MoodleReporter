@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using ReportsGenerator.DataStructures;
-using ReportsGenerator.Mail;
 using ReportsGenerator.Settings;
 using ReportsGenerator.TableGenerator;
 
@@ -20,12 +17,12 @@ namespace ReportsGenerator
 
         public async Task<List<Group>> GetGroups(int courseid)
         {
-            if (_groupsCashe.ContainsKey(courseid))
+            if (this._groupsCashe.ContainsKey(courseid))
             {
-                return await _groupsCashe[courseid];
+                return await this._groupsCashe[courseid];
             }
-            var groups = _moodle.GetCourseGroups(courseid);
-            _groupsCashe.Add(courseid, groups);
+            var groups = this._moodle.GetCourseGroups(courseid);
+            this._groupsCashe.Add(courseid, groups);
             return await groups;
         }
 
@@ -33,11 +30,11 @@ namespace ReportsGenerator
         {
             get
             {
-                return _moodle.Token;
+                return this._moodle.Token;
             }
             set
             {
-                _moodle.Token = value;
+                this._moodle.Token = value;
             }
         }
         public string Template
@@ -55,11 +52,11 @@ namespace ReportsGenerator
         {
             get
             {
-                return _moodle.MoodleServer;
+                return this._moodle.MoodleServer;
             }
             set
             {
-                _moodle.MoodleServer = value;
+                this._moodle.MoodleServer = value;
             }
         }
 
@@ -67,11 +64,11 @@ namespace ReportsGenerator
         {
             get
             {
-                return _curators;
+                return this._curators;
             }
             set
             {
-                _curators = value;
+                this._curators = value;
             }
         }
 
@@ -84,7 +81,7 @@ namespace ReportsGenerator
         {
             get
             {
-                return _messagesPreview;
+                return this._messagesPreview;
             }
         }
 
@@ -104,25 +101,25 @@ namespace ReportsGenerator
         public async Task GenerateReportMessages()
         {
             ReportTableGenerator reporterGenerator = new ReportTableGenerator();
-            double stepsCount = ReportInfo.Count() * 4;
+            double stepsCount = this.ReportInfo.Count() * 4;
             double currentStep = 0;
-            MailsPath = null;
-            if (!ReportInfo.Any())
+            this.MailsPath = null;
+            if (!this.ReportInfo.Any())
             {
                 throw new ReporterException("Нет данных для генерации отчета.");
             }
-            _sheetsForCurators.Clear();
-            MessagesPreview.Clear();
-            var coursesTask = _moodle.GetCoursesByIds(ReportInfo.Select(c => c.CourseID));
-            foreach (ReportInfo rInfo in ReportInfo)
+            this._sheetsForCurators.Clear();
+            this.MessagesPreview.Clear();
+            var coursesTask = this._moodle.GetCoursesByIds(this.ReportInfo.Select(c => c.CourseID));
+            foreach (ReportInfo rInfo in this.ReportInfo)
             {
-                GenerationProgressEvent(++currentStep / stepsCount);
+                this.GenerationProgressEvent(++currentStep / stepsCount);
                 // Генерация для каждого курса
                 reporterGenerator.Reset();
-                Task<List<Group>> groupsOfCourse = GetGroups(rInfo.CourseID);
-                Task<List<User>> courseGroupUsers = _moodle.GetEnrolUsers(rInfo.CourseID, rInfo.GroupID);
-                Task<List<Activity>> activityWithGrades = _moodle.GetGrades(rInfo.CourseID, await courseGroupUsers);
-                GenerationProgressEvent(++currentStep / stepsCount);
+                Task<List<Group>> groupsOfCourse = this.GetGroups(rInfo.CourseID);
+                Task<List<User>> courseGroupUsers = this._moodle.GetEnrolUsers(rInfo.CourseID, rInfo.GroupID);
+                Task<List<Activity>> activityWithGrades = this._moodle.GetGrades(rInfo.CourseID, await courseGroupUsers);
+                this.GenerationProgressEvent(++currentStep / stepsCount);
                 foreach (var activity in await activityWithGrades)
                 {
                     int temp;
@@ -138,8 +135,8 @@ namespace ReportsGenerator
                     }
                 }
 
-                GenerationProgressEvent(++currentStep / stepsCount);
-                String caption = CaptionGenerate(rInfo);
+                this.GenerationProgressEvent(++currentStep / stepsCount);
+                String caption = this.CaptionGenerate(rInfo);
                 StringBuilder newSheet;
                 switch (rInfo.CuratorsGenerationType)
                 {
@@ -159,34 +156,37 @@ namespace ReportsGenerator
                             }).ToArray();
                         foreach (var iCurators in institutionsCurators)
                         {
-                            newSheet = reporterGenerator.GenerateReportTable(rInfo,
-                                       (await coursesTask).First(c => c.Id == rInfo.CourseID), iCurators.Institution);
+                            newSheet = reporterGenerator.GenerateReportTable(
+                                rInfo,
+                                (await coursesTask).First(c => c.Id == rInfo.CourseID),
+                                iCurators.Institution);
                             if (rInfo.CuratorsGenerationType == DataStructures.ReportInfo.CuratorsGenerationTypeEnum.All)
                             {
-                                AppendSheetForCurators(Curators.Where(c => c.Institution == iCurators.Institution), caption, newSheet);
+                                this.AppendSheetForCurators(
+                                    this.Curators.Where(c => c.Institution == iCurators.Institution), caption, newSheet);
                             }
-                            AppendSheetForCurators(await iCurators.curators, caption, newSheet);
+                            this.AppendSheetForCurators(await iCurators.curators, caption, newSheet);
                         }
                         break;
                     case DataStructures.ReportInfo.CuratorsGenerationTypeEnum.Custom:
-                        var curator = Curators.First(c => c.Email == rInfo.CuratorsEmail);
-                        newSheet = reporterGenerator.GenerateReportTable(rInfo, (await coursesTask).First(c => c.Id == rInfo.CourseID), Curators.First(c => c.Email == rInfo.CuratorsEmail).Institution);
-                        AppendSheetForCurator(curator, caption, newSheet);
+                        var curator = this.Curators.First(c => c.Email == rInfo.CuratorsEmail);
+                        newSheet = reporterGenerator.GenerateReportTable(rInfo, (await coursesTask).First(c => c.Id == rInfo.CourseID), this.Curators.First(c => c.Email == rInfo.CuratorsEmail).Institution);
+                        this.AppendSheetForCurator(curator, caption, newSheet);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                GenerationProgressEvent(++currentStep / stepsCount);
+                this.GenerationProgressEvent(++currentStep / stepsCount);
             }
 
-            foreach (var tables in _sheetsForCurators)
+            foreach (var tables in this._sheetsForCurators)
             {
-                MessagesPreview.Add(GenerateMessage(tables.Value.ToString(), tables.Key));
+                this.MessagesPreview.Add(this.GenerateMessage(tables.Value.ToString(), tables.Key));
             }
             try
             {
-                _mail.UpdateMailSettings();
-                MailsPath = await _mail.SaveMails(MessagesPreview);
+                this._mail.UpdateMailSettings();
+                this.MailsPath = await this._mail.SaveMails(this.MessagesPreview);
             }
             catch (Exception e)
             {
@@ -198,21 +198,21 @@ namespace ReportsGenerator
         {
             foreach (ICurator curator in curators)
             {
-                AppendSheetForCurator(curator, caption, newSheet);
+                this.AppendSheetForCurator(curator, caption, newSheet);
             }
         }
 
         private void AppendSheetForCurator(ICurator curator, String caption, StringBuilder newSheet)
         {
             curator.Caption = caption;
-            var existedCurSheets = _sheetsForCurators.FirstOrDefault(c => c.Key.Email == curator.Email).Value;
+            var existedCurSheets = this._sheetsForCurators.FirstOrDefault(c => c.Key.Email == curator.Email).Value;
             if (existedCurSheets != null)
             {
                 existedCurSheets.Append(newSheet);
             }
             else
             {
-                _sheetsForCurators.Add(curator, new StringBuilder(newSheet.ToString()));
+                this._sheetsForCurators.Add(curator, new StringBuilder(newSheet.ToString()));
             }
         }
 
@@ -231,7 +231,7 @@ namespace ReportsGenerator
             {
                 return founded;
             }
-            Warnings.Add(String.Format("Не найдена  группа \"{0}\" для организации \"{1}\".", commonGroupName, institution));
+            this.Warnings.Add(String.Format("Не найдена  группа \"{0}\" для организации \"{1}\".", commonGroupName, institution));
             return null;
         }
 
@@ -240,10 +240,10 @@ namespace ReportsGenerator
         private string CaptionGenerate(ReportInfo rinfo)
         {
             return String.Format(
-                String.Format(GenerationSetting.Default.MailSubject,
+                String.Format(
+                    GenerationSetting.Default.MailSubject,
                     "{0}{1}{2}",
-                    "{3} {4} {5}"
-                    ),
+                    "{3} {4} {5}"),
                 rinfo.StartDate.Day,
                 rinfo.StartDate.Month == rinfo.EndDate.Month ? String.Empty : " " + months[rinfo.StartDate.Month - 1],
                 rinfo.StartDate.Year == rinfo.EndDate.Year ? String.Empty : " " + rinfo.StartDate.Year,
@@ -265,7 +265,7 @@ namespace ReportsGenerator
                     email.CC.Add(new MailAddress(ccEmail));
                 }
             }
-            email.Body = Template.Replace(GenerationSetting.Default.TagToTablesPaste, tables).Replace(
+            email.Body = this.Template.Replace(GenerationSetting.Default.TagToTablesPaste, tables).Replace(
                              GenerationSetting.Default.TagToWelcomePaste,
                              String.Format(GenerationSetting.Default.Welcome, (curator.IsMan ? GenerationSetting.Default.WelcomeMalePostfix : GenerationSetting.Default.WelcomeFemalePostfix), curator.FirstName));
             return email;
@@ -275,27 +275,27 @@ namespace ReportsGenerator
         public event SendingProgress SendingProgressEvent;
         public async Task<Dictionary<MailMessage, string>> SendReports()
         {
-            double steps = MessagesPreview.Count;
+            double steps = this.MessagesPreview.Count;
             double curStep = 0;
             var report = new Dictionary<MailMessage, string>();
-            _mail.UpdateMailSettings();
-            var tasks = from message in MessagesPreview
+            this._mail.UpdateMailSettings();
+            var tasks = from message in this.MessagesPreview
                         select new
             {
                 Mail = message,
-                Task = _mail.SendMail(message)
+                Task = this._mail.SendMail(message)
             };
             foreach (var item in tasks)
             {
                 report.Add(item.Mail, await item.Task);
-                SendingProgressEvent(++curStep / steps);
+                this.SendingProgressEvent(++curStep / steps);
             }
             return report;
         }
 
         public async Task<Course> GetCourseById(int courseid)
         {
-            return (await _moodle.GetCoursesByIds(new[] { courseid })).FirstOrDefault();
+            return (await this._moodle.GetCoursesByIds(new[] { courseid })).FirstOrDefault();
         }
     }
 
