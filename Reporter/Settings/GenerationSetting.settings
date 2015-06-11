@@ -77,5 +77,8 @@
     <Setting Name="CellStyle" Type="System.String" Scope="User">
       <Value Profile="(Default)">padding:5px;</Value>
     </Setting>
+    <Setting Name="PatternToCheckDirection" Type="System.String" Scope="User">
+      <Value Profile="(Default)">^{0} .*</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -61,7 +61,7 @@ namespace ReportsGenerator.Settings {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("yyyy-mm-dd HH.mm.ss")]
+        [global::System.Configuration.DefaultSettingValueAttribute("yyyy-MM-dd HH.mm.ss")]
         public string DateFormatForFolderName {
             get {
                 return ((string)(this["DateFormatForFolderName"]));

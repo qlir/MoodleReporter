@@ -321,7 +321,7 @@ namespace UIReporter
 
         private void BtnPreview_OnClick(object sender, RoutedEventArgs e)
         {
-            var messagesPreview = _reporter.MessagesPreview.Select(m => m).ToList();
+            var messagesPreview = _reporter.MessagesPreview.Values.Select(m => m).ToList();
             if (messagesPreview.Count == 0)
             {
                 ErrorWindow.ShowError(new ReporterException("Нет данных для просмотра."));

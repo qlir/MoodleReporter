@@ -323,5 +323,17 @@ namespace ReportsGenerator.Settings {
                 this["CellStyle"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("^{0} .*")]
+        public string PatternToCheckDirection {
+            get {
+                return ((string)(this["PatternToCheckDirection"]));
+            }
+            set {
+                this["PatternToCheckDirection"] = value;
+            }
+        }
     }
 }

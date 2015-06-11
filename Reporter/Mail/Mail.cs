@@ -26,6 +26,36 @@ namespace ReportsGenerator.Mail
             email = MailSettings.Default.Email;
         }
 
+        public void SaveMail(MailMessage message, string pathToSave)
+        {
+            var oldDeliveryMethod = client.DeliveryMethod;
+            client.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
+            var oldEnableSsl = client.EnableSsl;
+            client.EnableSsl = false;
+            string tempDirPath = pathToSave + "\\temp";
+            try
+            {
+                client.PickupDirectoryLocation = tempDirPath;
+                if (Directory.Exists(tempDirPath)) Directory.Delete(tempDirPath, true);
+                DirectoryInfo tempDir = Directory.CreateDirectory(tempDirPath);
+                message.From = new MailAddress(email);
+                client.Send(message);
+                File.Move(
+                    tempDir.GetFiles().First().FullName,
+                    pathToSave + "/" + string.Format(ReporterSettings.Default.EmailName, message.To.FirstOrDefault(), message.Subject));
+            }
+            catch (Exception e)
+            {
+                throw new ReporterException(String.Format("Ошибка сохранения письма: {0}", e.Message));
+            }
+            finally
+            {
+                if (Directory.Exists(tempDirPath)) Directory.Delete(tempDirPath, true);
+                client.DeliveryMethod = oldDeliveryMethod;
+                client.EnableSsl = oldEnableSsl;
+            }
+        }
+
         public async Task<string> SaveMails(IEnumerable<MailMessage> messages)
         {
             var oldDeliveryMethod = client.DeliveryMethod;
@@ -75,7 +105,6 @@ namespace ReportsGenerator.Mail
                 message.To.Add(new MailAddress("parafus@yandex.ru"));*/
                 message.From = new MailAddress(email);
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                /*" + message.To + ":" + message.Subject + "*/
                 await client.SendMailAsync(message);
                 return null;
             }

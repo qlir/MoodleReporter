@@ -103,6 +103,7 @@ namespace ReportsGenerator.UserData
                 Map(m => m.Gender).Name("Gender");
                 Map(m => m.City).Name("City");
                 Map(m => m.Institution).Name("Institution");
+                Map(m => m.Direction).Name("Direction");
             }
         }
 

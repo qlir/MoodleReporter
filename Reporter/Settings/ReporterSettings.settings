@@ -12,7 +12,7 @@
       <Value Profile="(Default)">;</Value>
     </Setting>
     <Setting Name="DateFormatForFolderName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">yyyy-mm-dd HH.mm.ss</Value>
+      <Value Profile="(Default)">yyyy-MM-dd HH.mm.ss</Value>
     </Setting>
     <Setting Name="EmailName" Type="System.String" Scope="User">
       <Value Profile="(Default)">{0}-{1}.eml</Value>

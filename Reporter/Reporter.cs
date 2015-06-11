@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ReportsGenerator.DataStructures;
 using ReportsGenerator.Settings;
 using ReportsGenerator.TableGenerator;
+using Group = ReportsGenerator.DataStructures.Group;
 
 namespace ReportsGenerator
 {
     public class Reporter
     {
-        private readonly int[] curatorRoles = { 4, 9 };
-        public static readonly string[] months = { "января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря" };
+        private readonly int[] _curatorRoles = { 4, 9 };
+        public static readonly string[] Months = { "января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря" };
 
         public async Task<List<Group>> GetGroups(int courseid)
         {
@@ -77,7 +79,7 @@ namespace ReportsGenerator
         private readonly Moodle.MoodleCtrl _moodle = new Moodle.MoodleCtrl();
         private readonly Mail.Mail _mail = new Mail.Mail();
 
-        public IList<MailMessage> MessagesPreview
+        public IDictionary<ICurator, MailMessage> MessagesPreview
         {
             get
             {
@@ -86,7 +88,7 @@ namespace ReportsGenerator
         }
 
         private readonly IDictionary<ICurator, StringBuilder> _sheetsForCurators = new Dictionary<ICurator, StringBuilder>();
-        private readonly IList<MailMessage> _messagesPreview = new List<MailMessage>();
+        private readonly IDictionary<ICurator, MailMessage> _messagesPreview = new Dictionary<ICurator, MailMessage>();
         private readonly Dictionary<int, Task<List<Group>>> _groupsCashe = new Dictionary<int, Task<List<Group>>>();
         private IEnumerable<Curator> _curators = new List<Curator>();
 
@@ -151,19 +153,20 @@ namespace ReportsGenerator
                                 curators = Task.Run(async () =>
                                 {
                                     Group gr = GetInstitutionGroupFromUsers(await groupsOfCourse, g.Key, rInfo.GroupName);
-                                    return gr == null ? new List<User>() : (await _moodle.GetEnrolUsers(rInfo.CourseID, gr.Id)).Where(i => i.Roles.Any(r => curatorRoles.Contains(r.Id)));
+                                    return gr == null ? new List<User>() : (await _moodle.GetEnrolUsers(rInfo.CourseID, gr.Id)).Where(i => i.Roles.Any(r => _curatorRoles.Contains(r.Id)));
                                 })
                             }).ToArray();
                         foreach (var iCurators in institutionsCurators)
                         {
+                            Course course = (await coursesTask).First(c => c.Id == rInfo.CourseID);
                             newSheet = reporterGenerator.GenerateReportTable(
                                 rInfo,
-                                (await coursesTask).First(c => c.Id == rInfo.CourseID),
+                                course,
                                 iCurators.Institution);
                             if (rInfo.CuratorsGenerationType == DataStructures.ReportInfo.CuratorsGenerationTypeEnum.All)
                             {
                                 this.AppendSheetForCurators(
-                                    this.Curators.Where(c => c.Institution == iCurators.Institution), caption, newSheet);
+                                    this.Curators.Where(c => c.Institution == iCurators.Institution && CheckDirection(course,c)), caption, newSheet);
                             }
                             this.AppendSheetForCurators(await iCurators.curators, caption, newSheet);
                         }
@@ -181,17 +184,29 @@ namespace ReportsGenerator
 
             foreach (var tables in this._sheetsForCurators)
             {
-                this.MessagesPreview.Add(this.GenerateMessage(tables.Value.ToString(), tables.Key));
+                this.MessagesPreview.Add(tables.Key, this.GenerateMessage(tables.Value.ToString(), tables.Key));
             }
             try
             {
                 this._mail.UpdateMailSettings();
-                this.MailsPath = await this._mail.SaveMails(this.MessagesPreview);
+
+                string mailPath = string.Format("{0}/{1}/{2}", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ReporterSettings.Default.DirrectoryForEmails, DateTime.Now.ToString(ReporterSettings.Default.DateFormatForFolderName));
+                foreach (var mess in this.MessagesPreview)
+                {
+                    _mail.SaveMail(mess.Value, string.Format("{0}/{1}", mailPath, mess.Key.Institution));
+                }
+                this.MailsPath = mailPath;
             }
             catch (Exception e)
             {
                 throw new ReporterException("Генерация успешно завершена, но сообщения не были сохранены из-за ошибки:\n" + e.Message, e);
             }
+        }
+
+        private bool CheckDirection(Course course, ICurator curator)
+        {
+            if (string.IsNullOrWhiteSpace(curator.Direction)) return true;
+            return Regex.IsMatch(course.ShortName, string.Format(GenerationSetting.Default.PatternToCheckDirection, curator.Direction));
         }
 
         private void AppendSheetForCurators(IEnumerable<ICurator> curators, String caption, StringBuilder newSheet)
@@ -245,10 +260,10 @@ namespace ReportsGenerator
                     "{0}{1}{2}",
                     "{3} {4} {5}"),
                 rinfo.StartDate.Day,
-                rinfo.StartDate.Month == rinfo.EndDate.Month ? String.Empty : " " + months[rinfo.StartDate.Month - 1],
+                rinfo.StartDate.Month == rinfo.EndDate.Month ? String.Empty : " " + Months[rinfo.StartDate.Month - 1],
                 rinfo.StartDate.Year == rinfo.EndDate.Year ? String.Empty : " " + rinfo.StartDate.Year,
                 rinfo.EndDate.Day,
-                months[rinfo.EndDate.Month - 1],
+                Months[rinfo.EndDate.Month - 1],
                 rinfo.EndDate.Year);
         }
 
@@ -283,11 +298,11 @@ namespace ReportsGenerator
                         select new
             {
                 Mail = message,
-                Task = this._mail.SendMail(message)
+                Task = this._mail.SendMail(message.Value)
             };
             foreach (var item in tasks)
             {
-                report.Add(item.Mail, await item.Task);
+                report.Add(item.Mail.Value, await item.Task);
                 this.SendingProgressEvent(++curStep / steps);
             }
             return report;

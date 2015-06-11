@@ -82,6 +82,8 @@ namespace ReportsGenerator.DataStructures
             }
         }
 
+        public string Direction { get; set; }
+
         [JsonProperty("lastName")]
         public string LastName
         {

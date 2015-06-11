@@ -63,6 +63,14 @@
             }
         }
 
+        public string Direction
+        {
+            get
+            {
+                return null;
+            } 
+        }
+
         [JsonProperty("lastname")]
         public string LastName
         {

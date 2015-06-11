@@ -33,5 +33,7 @@
         {
             get;
         }
+
+        string Direction { get;}
     }
 }

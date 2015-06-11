@@ -43,6 +43,7 @@ namespace UIReporter.SettingsViews
             AddField("Стиль колонок пройденных недель", "PassedColumnStyle");
             AddField("Тег для вставки таблиц", "TagToTablesPaste");
             AddField("Тег для вставки обращения", "TagToWelcomePaste");
+            AddField("Шаблон для проверки направления курса", "PatternToCheckDirection");
         }
 
         private void AddField(string title, string fieldName)
