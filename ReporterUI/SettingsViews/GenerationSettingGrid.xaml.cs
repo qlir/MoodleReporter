@@ -40,7 +40,6 @@ namespace UIReporter.SettingsViews
             AddField("Стиль строки с оценками", "GradesRowsStyle");
             AddField("Стиль ячеек", "CellStyle");
             AddField("Стиль колонок пройденных недель", "PassedColumnStyle");
-            AddField("Стиль колонок пройденных недель", "PassedColumnStyle");
             AddField("Тег для вставки таблиц", "TagToTablesPaste");
             AddField("Тег для вставки обращения", "TagToWelcomePaste");
             AddField("Шаблон для проверки направления курса", "PatternToCheckDirection");

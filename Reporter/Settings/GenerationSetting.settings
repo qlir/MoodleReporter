@@ -15,7 +15,7 @@
       <Value Profile="(Default)">Учреждение  (Организация)</Value>
     </Setting>
     <Setting Name="PassedColumnStyle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">background-color:#ffeeee;</Value>
+      <Value Profile="(Default)">"ИО"="background-color:#ffeeee;"&amp;"Продажи"="background-color:#fff888;"</Value>
     </Setting>
     <Setting Name="PassedGradeRowStyle" Type="System.String" Scope="User">
       <Value Profile="(Default)">color:brown;font-weight:bold;</Value>

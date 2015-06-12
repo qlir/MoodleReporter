@@ -8,16 +8,40 @@ namespace ReportsGenerator.TableGenerator
     using System.Text;
     using System.Text.RegularExpressions;
 
-    using ReportsGenerator.DataStructures;
+    using DataStructures;
 
     public class ReportTableGenerator
     {
         private readonly string[] _baseColumnHeaders = { GenerationSetting.Default.FioColumnTite, GenerationSetting.Default.InstitutionColumnTitle };
-        private readonly string _passedColumnStyle = GenerationSetting.Default.PassedColumnStyle;
+
+        private readonly Dictionary<string, string> _passedColumnStyles = new Dictionary<string, string>();
+
         private readonly string _numberFormat = GenerationSetting.Default.NumberFormat;
 
-
         private List<Item> items = new List<Item>();
+
+        public ReportTableGenerator()
+        {
+            string pattern = "\"(.*?)\"=\"(.*?)\"";
+            var match = Regex.Match(GenerationSetting.Default.PassedColumnStyle, pattern);
+            if (!match.Success)
+            {
+                _passedColumnStyles.Add(".*", GenerationSetting.Default.PassedColumnStyle);
+                return;
+            }
+            while (match.Success)
+            {
+                string key = string.Format(GenerationSetting.Default.PatternToCheckDirection, match.Groups[1].Value);
+                string value = match.Groups[2].Value;
+                _passedColumnStyles.Add(key, value);
+                match = match.NextMatch();
+            }
+        }
+
+        private string GetPassedColumnStyle(string courseName)
+        {
+            return _passedColumnStyles.FirstOrDefault(i => Regex.IsMatch(courseName, i.Key)).Value;
+        }
 
         public void AddItem(User user, Grade grade, Activity activity)
         {
@@ -83,7 +107,6 @@ namespace ReportsGenerator.TableGenerator
 
         public StringBuilder GenerateReportTable(ReportInfo reportInfo, Course course, string institution)
         {
-
             int weekNumber = ((DateTime.Now - reportInfo.StartDate).Days + 1) / 7;
             int cycle = (int)Math.Round(((reportInfo.EndDate - reportInfo.StartDate).Days) / 7.0);
             int nonGradeColumnsCount = _baseColumnHeaders.Length;
@@ -129,7 +152,9 @@ namespace ReportsGenerator.TableGenerator
             table.Init(GenerationSetting.Default.TableStyle);
             table.OpenColGroup();
             table.AddColumnStyle(nonGradeColumnsCount, string.Empty);
-            table.AddColumnStyle(cycle > weekNumber ? weekNumber : orderedGrades.Count, _passedColumnStyle);
+
+            table.AddColumnStyle(cycle > weekNumber ? weekNumber : orderedGrades.Count, GetPassedColumnStyle(course.ShortName));
+
             table.CloseColGroup();
 
             if (!items.Any())

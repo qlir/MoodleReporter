@@ -73,7 +73,7 @@ namespace ReportsGenerator.Settings {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("background-color:#ffeeee;")]
+        [global::System.Configuration.DefaultSettingValueAttribute("\"ИО\"=\"background-color:#ffeeee;\"&\"Продажи\"=\"background-color:#fff888;\"")]
         public string PassedColumnStyle {
             get {
                 return ((string)(this["PassedColumnStyle"]));
