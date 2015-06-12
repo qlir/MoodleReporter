@@ -163,12 +163,12 @@ namespace ReportsGenerator
                                 rInfo,
                                 course,
                                 iCurators.Institution);
+                            var curators = new List<ICurator>();
+                            curators.AddRange(await iCurators.curators);
                             if (rInfo.CuratorsGenerationType == DataStructures.ReportInfo.CuratorsGenerationTypeEnum.All)
-                            {
-                                this.AppendSheetForCurators(
-                                    this.Curators.Where(c => c.Institution == iCurators.Institution && CheckDirection(course,c)), caption, newSheet);
-                            }
-                            this.AppendSheetForCurators(await iCurators.curators, caption, newSheet);
+                                curators.AddRange(this.Curators.Where(c => c.Institution == iCurators.Institution && CheckDirection(course, c) && !curators.Any(moodleCurator => moodleCurator.Email == c.Email)));
+
+                            this.AppendSheetForCurators(curators, caption, newSheet);
                         }
                         break;
                     case DataStructures.ReportInfo.CuratorsGenerationTypeEnum.Custom:
