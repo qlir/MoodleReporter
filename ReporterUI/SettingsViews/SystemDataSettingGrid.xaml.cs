@@ -38,15 +38,10 @@ namespace UIReporter.SettingsViews
             ReporterSettings.Default.Save();
         }
 
-        private void TextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        private void Discard_OnClick(object sender, RoutedEventArgs e)
         {
-            char c = Convert.ToChar(e.Text);
-            if (Char.IsNumber(c))
-                e.Handled = false;
-            else
-                e.Handled = true;
-
-            base.OnPreviewTextInput(e);
+            ReporterSettings.Default.Reset();
+            ReporterSettings.Default.Save();
         }
     }
 }

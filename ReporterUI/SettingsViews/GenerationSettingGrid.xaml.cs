@@ -70,5 +70,11 @@ namespace UIReporter.SettingsViews
 
             base.OnPreviewTextInput(e);
         }
+
+        private void Discard_OnClick(object sender, RoutedEventArgs e)
+        {
+            GenerationSetting.Default.Reset();
+            GenerationSetting.Default.Save();
+        }
     }
 }

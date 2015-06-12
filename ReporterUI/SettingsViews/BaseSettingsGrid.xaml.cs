@@ -60,7 +60,7 @@ namespace UIReporter.SettingsViews
 
             MailSettings.Default.Save();
             MoodleSettings.Default.Save();
-           // Close();
+            // Close();
         }
 
         private void TextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
@@ -72,6 +72,14 @@ namespace UIReporter.SettingsViews
                 e.Handled = true;
 
             base.OnPreviewTextInput(e);
+        }
+
+        private void Discard_OnClick(object sender, RoutedEventArgs e)
+        {
+            MailSettings.Default.Reset();
+            MailSettings.Default.Save();
+            MoodleSettings.Default.Reset();
+            MoodleSettings.Default.Save();
         }
     }
 }

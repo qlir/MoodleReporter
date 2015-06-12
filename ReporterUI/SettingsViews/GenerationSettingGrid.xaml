@@ -13,8 +13,11 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <GroupBox  Grid.Row="0" Header="Настройки генерации">
-          <StackPanel Name="FieldsContainer" Orientation="Vertical" />
+            <StackPanel Name="FieldsContainer" Orientation="Vertical" />
         </GroupBox>
-        <Button Grid.Row="2" Margin="5" Padding="3" Content="Сохранить" HorizontalAlignment="Right" Click="Save_OnClick" ></Button>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right"  >
+            <Button Margin="5" Padding="3" Content="По умолчанию" HorizontalAlignment="Right" Click="Discard_OnClick" ></Button>
+            <Button Margin="5" Padding="3" Content="Сохранить" HorizontalAlignment="Right" Click="Save_OnClick" ></Button>
+        </StackPanel>
     </Grid>
 </Grid>
