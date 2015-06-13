@@ -11,11 +11,24 @@ namespace ReportsGenerator.UserData
     {
         private const string UserDataDirrectory = "UserData/";
         private const string MailTemplatePath = "Template.html";
+        private const string MailLastTemplatePath = "SummaryTemplate.html";
 
-        public static async Task<string> LoadTemplate()
+        public static async Task<string> LoadDefaultTemplate()
         {
+            return await ReadFileAsync(UserDataDirrectory + MailTemplatePath);
+        }
+
+        public static async Task<string> LoadLastTemplate()
+        {
+            return await ReadFileAsync(UserDataDirrectory + MailLastTemplatePath);
+        }
+
+        public static async Task<string> ReadFileAsync(string path)
+        {
+            if (!File.Exists(path)) return null;
             string result;
-            using (var file = new StreamReader(UserDataDirrectory + MailTemplatePath))
+
+            using (var file = new StreamReader(path))
             {
                 result = await file.ReadToEndAsync();
             }

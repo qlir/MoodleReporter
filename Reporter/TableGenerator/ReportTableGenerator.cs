@@ -107,8 +107,8 @@ namespace ReportsGenerator.TableGenerator
 
         public StringBuilder GenerateReportTable(ReportInfo reportInfo, Course course, string institution)
         {
-            int weekNumber = ((DateTime.Now - reportInfo.StartDate).Days + 1) / 7;
-            int cycle = (int)Math.Round(((reportInfo.EndDate - reportInfo.StartDate).Days) / 7.0);
+            int weekNumber = Reporter.GetWeekNumber(reportInfo);
+            int cycle = Reporter.GetWeeksCount(reportInfo);
             int nonGradeColumnsCount = _baseColumnHeaders.Length;
             var items = from i in this.items
                         where i.Institution == institution

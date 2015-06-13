@@ -267,7 +267,10 @@ namespace UIReporter
                 _reporter.GenerationProgressEvent += progressHandler;
                 try
                 {
-                    _reporter.Template = await TemplateProvider.LoadTemplate();
+                    _reporter.DefaultTemplate = await TemplateProvider.LoadDefaultTemplate();
+                    if (_reporter.DefaultTemplate == null) throw new ReporterException("Не заданно шаблона по умолчанию.");
+                    _reporter.LastTemplate = await TemplateProvider.LoadLastTemplate();
+                        
                     await GenerateReportAsync();
                     isSuccess = true;
                 }

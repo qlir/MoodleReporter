@@ -39,11 +39,18 @@ namespace ReportsGenerator
                 this._moodle.Token = value;
             }
         }
-        public string Template
+        public string DefaultTemplate
         {
             get;
             set;
         }
+
+        public string LastTemplate
+        {
+            get { return _lastTemplate ?? DefaultTemplate; }
+            set { _lastTemplate = value; }
+        }
+
         public IEnumerable<ReportInfo> ReportInfo
         {
             get;
@@ -113,9 +120,15 @@ namespace ReportsGenerator
             this._sheetsForCurators.Clear();
             this.MessagesPreview.Clear();
             var coursesTask = this._moodle.GetCoursesByIds(this.ReportInfo.Select(c => c.CourseID));
+
+            // TODO: this is bad. Need to merge dates of ReportInfo.
+            int weekNumber = GetWeekNumber(ReportInfo.First());
+            int weeksCount = GetWeeksCount(ReportInfo.First());
+
             foreach (ReportInfo rInfo in this.ReportInfo)
             {
                 this.GenerationProgressEvent(++currentStep / stepsCount);
+
                 // Генерация для каждого курса
                 reporterGenerator.Reset();
                 Task<List<Group>> groupsOfCourse = this.GetGroups(rInfo.CourseID);
@@ -184,7 +197,7 @@ namespace ReportsGenerator
 
             foreach (var tables in this._sheetsForCurators)
             {
-                this.MessagesPreview.Add(tables.Key, this.GenerateMessage(tables.Value.ToString(), tables.Key));
+                this.MessagesPreview.Add(tables.Key, this.GenerateMessage(tables.Value.ToString(), tables.Key, weekNumber == weeksCount));
             }
             try
             {
@@ -251,6 +264,7 @@ namespace ReportsGenerator
         }
 
         public readonly List<String> Warnings = new List<string>();
+        private string _lastTemplate;
 
         private string CaptionGenerate(ReportInfo rinfo)
         {
@@ -267,7 +281,7 @@ namespace ReportsGenerator
                 rinfo.EndDate.Year);
         }
 
-        private MailMessage GenerateMessage(string tables, ICurator curator)
+        private MailMessage GenerateMessage(string tables, ICurator curator, bool isLastWeek)
         {
             var email = new MailMessage();
             email.To.Add(new MailAddress(curator.Email));
@@ -280,10 +294,21 @@ namespace ReportsGenerator
                     email.CC.Add(new MailAddress(ccEmail));
                 }
             }
-            email.Body = this.Template.Replace(GenerationSetting.Default.TagToTablesPaste, tables).Replace(
+            string template = isLastWeek ? this.LastTemplate : this.DefaultTemplate;
+            email.Body = template.Replace(GenerationSetting.Default.TagToTablesPaste, tables).Replace(
                              GenerationSetting.Default.TagToWelcomePaste,
                              String.Format(GenerationSetting.Default.Welcome, (curator.IsMan ? GenerationSetting.Default.WelcomeMalePostfix : GenerationSetting.Default.WelcomeFemalePostfix), curator.FirstName));
             return email;
+        }
+
+        public static int GetWeekNumber(ReportInfo reportInfo)
+        {
+            return ((DateTime.Now - reportInfo.StartDate).Days + 1) / 7;
+        }
+
+        public static int GetWeeksCount(ReportInfo reportInfo)
+        {
+            return (int)Math.Round(((reportInfo.EndDate - reportInfo.StartDate).Days) / 7.0);
         }
 
         public delegate void SendingProgress(double progress);

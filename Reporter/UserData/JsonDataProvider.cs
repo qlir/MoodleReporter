@@ -13,7 +13,7 @@ namespace ReportsGenerator.UserData
         private const string CuratorsJsonPath = "Curators.json";
         private const string ReportInfoJsonPath = "ReportInfo.json";
         private const string CoursesPath = "Courses.json";
-        private const string MailTemplatePath = "Template.html";
+        private const string MailTemplatePath = "DefaultTemplate.html";
 
         public static async Task<List<Curator>> LoadCurators()
         {
