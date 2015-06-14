@@ -1,4 +1,5 @@
-﻿using ReportsGenerator.Settings;
+﻿using System.CodeDom;
+using ReportsGenerator.Settings;
 
 namespace ReportsGenerator.TableGenerator
 {
@@ -157,21 +158,33 @@ namespace ReportsGenerator.TableGenerator
             table.Init(GenerationSetting.Default.TableStyle);
             table.OpenColGroup();
             table.AddColumnStyle(nonGradeColumnsCount, string.Empty);
-
-            table.AddColumnStyle(cycle > weekNumber ? weekNumber : orderedGrades.Count, GetPassedColumnStyle(course.ShortName));
+            var passedColumnStyle = GetPassedColumnStyle(course.ShortName);
+            table.AddColumnStyle(cycle > weekNumber ? weekNumber : orderedGrades.Count, passedColumnStyle);
 
             table.CloseColGroup();
 
             // Заголовки
             table.AddCaption(string.Format(GenerationSetting.Default.TableTitle, weekNumber, course.ShortName), GenerationSetting.Default.CaptionStyle);
-            table.AddRow(_baseColumnHeaders.Concat(orderedGrades.Select(a => a.TestName)), GenerationSetting.Default.HeadersColumnsStyle, GenerationSetting.Default.CellStyle);
+            // table.AddRow(_baseColumnHeaders.Concat(orderedGrades.Select(a => a.TestName)), , );
+            table.OpenRow(GenerationSetting.Default.HeadersColumnsStyle);
+            foreach (var i in _baseColumnHeaders)
+            {
+                table.AddCell(i, GenerationSetting.Default.CellStyle);
+            }
+            for (int i = 0; i < orderedGrades.Count; i++)
+            {
+                var name = orderedGrades[i].TestName;
+                table.AddCell(name, (i < weekNumber ? GenerationSetting.Default.CellStyle + passedColumnStyle : GenerationSetting.Default.CellStyle));
+            }
+            table.CloseRow();
 
             // Проходной балл
             table.OpenRow(GenerationSetting.Default.PassedGradeRowStyle);
             table.AddCell(GenerationSetting.Default.PassedGradeRowHeader, GenerationSetting.Default.CellStyle, nonGradeColumnsCount);
-            foreach (var item in orderedGrades)
+            for (int i = 0; i < orderedGrades.Count; i++)
             {
-                table.AddCell(item.GradePass.ToString(_numberFormat), GenerationSetting.Default.CellStyle);
+                var item = orderedGrades[i];
+                table.AddCell(item.GradePass.ToString(_numberFormat), (i < weekNumber ? GenerationSetting.Default.CellStyle + passedColumnStyle : GenerationSetting.Default.CellStyle));
             }
             table.CloseRow();
 
@@ -179,19 +192,24 @@ namespace ReportsGenerator.TableGenerator
             foreach (var i in items)
             {
                 var sortedGrade = orderedGrades.Select(g => i.grades.Values.First(vg => vg.TestId == g.TestId));
-                table.AddRow(
-                    new[] { i.FullName, i.Institution }.Concat(sortedGrade.Select(item => item.Grade.ToString(_numberFormat))),
-                    GenerationSetting.Default.GradesRowsStyle,
-                    GenerationSetting.Default.CellStyle);
+                table.OpenRow(GenerationSetting.Default.GradesRowsStyle);
+                table.AddCell(i.FullName, GenerationSetting.Default.CellStyle);
+                table.AddCell(i.Institution, GenerationSetting.Default.CellStyle);
+                var grades = sortedGrade.Select(item => item.Grade.ToString(_numberFormat)).ToList();
+                for (int ii = 0; ii < grades.Count; ii++)
+                {
+                    table.AddCell(grades[ii], (ii < weekNumber ? GenerationSetting.Default.CellStyle + passedColumnStyle : GenerationSetting.Default.CellStyle));
+                }
             }
 
             // Среднее по РИЦ
             table.OpenRow(GenerationSetting.Default.AVGbyInstitutionRowStyle);
             table.AddCell(GenerationSetting.Default.AVGbyInstitutionRowHeader, GenerationSetting.Default.CellStyle, nonGradeColumnsCount);
             var institutionAvg = CalcAVGbyInstitution(institution);
-            foreach (var grade in orderedGrades)
+            for (int i = 0; i < orderedGrades.Count; i++)
             {
-                table.AddCell(institutionAvg[grade.TestId].ToString(_numberFormat), GenerationSetting.Default.CellStyle);
+                var grade = orderedGrades[i];
+                table.AddCell(institutionAvg[grade.TestId].ToString(_numberFormat), (i < weekNumber ? GenerationSetting.Default.CellStyle + passedColumnStyle : GenerationSetting.Default.CellStyle));
             }
             table.CloseRow();
 
@@ -199,9 +217,12 @@ namespace ReportsGenerator.TableGenerator
             table.OpenRow(GenerationSetting.Default.AVGbyInstitutionsRowStyle);
             table.AddCell(GenerationSetting.Default.AVGbyInstitutionsRowHeader, GenerationSetting.Default.CellStyle, nonGradeColumnsCount);
             var commonAvg = CalcAVGbyInstitutions();
-            foreach (var grade in orderedGrades)
+            for (int i = 0; i < orderedGrades.Count; i++)
             {
-                table.AddCell((commonAvg.ContainsKey(grade.TestId) ? commonAvg[grade.TestId] : 0).ToString(_numberFormat), GenerationSetting.Default.CellStyle);
+                var grade = orderedGrades[i];
+                table.AddCell(
+                    (commonAvg.ContainsKey(grade.TestId) ? commonAvg[grade.TestId] : 0).ToString(_numberFormat),
+                    (i < weekNumber ? GenerationSetting.Default.CellStyle + passedColumnStyle : GenerationSetting.Default.CellStyle));
             }
             table.CloseRow();
 
@@ -209,9 +230,11 @@ namespace ReportsGenerator.TableGenerator
             table.OpenRow(GenerationSetting.Default.ProgressRowStyle);
             table.AddCell(GenerationSetting.Default.ProgressRowHeader, GenerationSetting.Default.CellStyle, nonGradeColumnsCount);
             var testsProgress = CalcProgressInstitution(institution);
-            foreach (var grade in orderedGrades)
+            for (int i = 0; i < orderedGrades.Count; i++)
             {
-                table.AddCell((testsProgress[grade.TestId] * 100).ToString(_numberFormat) + "%", GenerationSetting.Default.CellStyle);
+                var grade = orderedGrades[i];
+                table.AddCell((testsProgress[grade.TestId] * 100).ToString(_numberFormat) + "%",
+                    (i < weekNumber ? GenerationSetting.Default.CellStyle + passedColumnStyle : GenerationSetting.Default.CellStyle));
             }
             table.CloseRow();
 
