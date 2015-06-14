@@ -43,6 +43,7 @@ namespace UIReporter.SettingsViews
             AddField("Тег для вставки таблиц", "TagToTablesPaste");
             AddField("Тег для вставки обращения", "TagToWelcomePaste");
             AddField("Шаблон для проверки направления курса", "PatternToCheckDirection");
+            AddField("ID ролей кураторов", "CuratorsRoles");
         }
 
         private void AddField(string title, string fieldName)

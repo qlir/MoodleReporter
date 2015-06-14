@@ -14,7 +14,7 @@ namespace ReportsGenerator
 {
     public class Reporter
     {
-        private readonly int[] _curatorRoles = { 4, 9 };
+        private IEnumerable<int> _curatorRoles;
         public static readonly string[] Months = { "января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря" };
 
         public async Task<List<Group>> GetGroups(int courseid)
@@ -109,6 +109,7 @@ namespace ReportsGenerator
         public event GenerationProgress GenerationProgressEvent;
         public async Task GenerateReportMessages()
         {
+            _curatorRoles = GenerationSetting.Default.CuratorsRoles.Split(',').Select(int.Parse);
             ReportTableGenerator reporterGenerator = new ReportTableGenerator();
             double stepsCount = this.ReportInfo.Count() * 4;
             double currentStep = 0;

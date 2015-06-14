@@ -4,15 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms.PropertyGridInternal;
 using ReportsGenerator.Settings;
 
 namespace ReportsGenerator.Mail
 {
     class Mail
     {
+
         private SmtpClient client = new SmtpClient();
         private string email;
         public void UpdateMailSettings()

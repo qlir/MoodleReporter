@@ -115,10 +115,6 @@ namespace UIReporter
             IsEnabled = false;
             Save();
         }
-        private bool ReportsInfosContainsCourse(IEnumerable<ReportInfo> reportsInfos, Course course)
-        {
-            return reportsInfos.Any(ri => ri.CourseID == course.Id);
-        }
 
         public void DeleteSelectedItems()
         {
@@ -143,16 +139,16 @@ namespace UIReporter
                 }));
                 if (can)
                 {
-                    var result = MessageBox.Show(this, courses.Length > 1 ? "Удалить курсы?" : "Удалить курс?", "Удаление",
-                        MessageBoxButton.YesNo);
-                    if (result == MessageBoxResult.Yes)
-                    {
+                    /*var result = MessageBox.Show(this, courses.Length > 1 ? "Удалить курсы?" : "Удалить курс?", "Удаление",
+                        MessageBoxButton.YesNo);*/
+/*                    if (result == MessageBoxResult.Yes)
+                    {*/
                         foreach (var c in courses)
                         {
                             Courses.Remove(c);
                         }
                         Save();
-                    }
+                  /*  }*/
                 }
                 else
                     MessageBox.Show(this, String.Format("Невозможно удалить курс '{0}' так как он используется.", courseName), "Удаление");

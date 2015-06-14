@@ -335,5 +335,17 @@ namespace ReportsGenerator.Settings {
                 this["PatternToCheckDirection"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4,9")]
+        public string CuratorsRoles {
+            get {
+                return ((string)(this["CuratorsRoles"]));
+            }
+            set {
+                this["CuratorsRoles"] = value;
+            }
+        }
     }
 }

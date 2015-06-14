@@ -127,6 +127,11 @@ namespace ReportsGenerator.TableGenerator
                                 grades = g.ToDictionary(i => i.TestId, i => new { i.TestName, i.TestId, i.Grade, i.GradePass })
                             };
 
+            if (!items.Any())
+            {
+                throw new ReporterException(String.Format("Группа \"{0}\" курса \"{1}\" не имеет пользователей с учреждением \"{2}\".", reportInfo.GroupName, course.ShortName, institution));
+            }
+
             var orderedGrades = items.First().grades.Values.ToList();
             orderedGrades.Sort((a, b) =>
             {
@@ -156,11 +161,6 @@ namespace ReportsGenerator.TableGenerator
             table.AddColumnStyle(cycle > weekNumber ? weekNumber : orderedGrades.Count, GetPassedColumnStyle(course.ShortName));
 
             table.CloseColGroup();
-
-            if (!items.Any())
-            {
-                throw new ReporterException(String.Format("Группа \"{1}\" курса \"{0}\" не имеет пользователей с учреждением \"{2}\".", reportInfo.GroupName, course.ShortName, institution));
-            }
 
             // Заголовки
             table.AddCaption(string.Format(GenerationSetting.Default.TableTitle, weekNumber, course.ShortName), GenerationSetting.Default.CaptionStyle);
