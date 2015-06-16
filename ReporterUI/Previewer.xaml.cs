@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing.Imaging;
 using System.Net.Mail;
+using System.Text;
 using System.Windows;
 using System.Windows.Navigation;
 using ReportsGenerator;
@@ -34,7 +37,16 @@ namespace UIReporter
             set
             {
                 _index = value;
-                Browser.NavigateToString(DisplayedMessage.Body);
+                StringBuilder sb = new StringBuilder();
+                char[] s = DisplayedMessage.Body.ToCharArray();
+                foreach (char c in s)
+                {
+                    if (Convert.ToInt32(c) > 127)
+                        sb.Append("&#" + Convert.ToInt32(c) + ";");
+                    else
+                        sb.Append(c);
+                }
+                Browser.NavigateToString(sb.ToString());
             }
         }
 
