@@ -73,7 +73,7 @@ namespace ReportsGenerator.Settings {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("{0}-{1}.eml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("{0}-{1}")]
         public string EmailName {
             get {
                 return ((string)(this["EmailName"]));

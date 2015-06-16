@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ReportsGenerator.DataStructures;
+using ReportsGenerator.Mail;
 using ReportsGenerator.Settings;
 using ReportsGenerator.TableGenerator;
 using Group = ReportsGenerator.DataStructures.Group;
@@ -86,16 +88,16 @@ namespace ReportsGenerator
         private readonly Moodle.MoodleCtrl _moodle = new Moodle.MoodleCtrl();
         private readonly Mail.Mail _mail = new Mail.Mail();
 
-        public IDictionary<ICurator, MailMessage> MessagesPreview
+        public IDictionary<ICurator, MailMessage> GeneratedMessages
         {
             get
             {
-                return this._messagesPreview;
+                return this._generatedMessages;
             }
         }
 
         private readonly IDictionary<ICurator, StringBuilder> _sheetsForCurators = new Dictionary<ICurator, StringBuilder>();
-        private readonly IDictionary<ICurator, MailMessage> _messagesPreview = new Dictionary<ICurator, MailMessage>();
+        private readonly IDictionary<ICurator, MailMessage> _generatedMessages = new Dictionary<ICurator, MailMessage>();
         private readonly Dictionary<int, Task<List<Group>>> _groupsCashe = new Dictionary<int, Task<List<Group>>>();
         private IEnumerable<Curator> _curators = new List<Curator>();
 
@@ -119,7 +121,7 @@ namespace ReportsGenerator
                 throw new ReporterException("Нет данных для генерации отчета.");
             }
             this._sheetsForCurators.Clear();
-            this.MessagesPreview.Clear();
+            this.GeneratedMessages.Clear();
             var coursesTask = this._moodle.GetCoursesByIds(this.ReportInfo.Select(c => c.CourseID));
 
             // TODO: this is bad. Need to merge dates of ReportInfo.
@@ -198,14 +200,14 @@ namespace ReportsGenerator
 
             foreach (var tables in this._sheetsForCurators)
             {
-                this.MessagesPreview.Add(tables.Key, this.GenerateMessage(tables.Value.ToString(), tables.Key, weekNumber == weeksCount));
+                this.GeneratedMessages.Add(tables.Key, this.GenerateMessage(tables.Value.ToString(), tables.Key, weekNumber == weeksCount));
             }
             try
             {
                 this._mail.UpdateMailSettings();
 
                 string mailPath = string.Format("{0}/{1}/{2}", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ReporterSettings.Default.DirrectoryForEmails, DateTime.Now.ToString(ReporterSettings.Default.DateFormatForFolderName));
-                foreach (var mess in this.MessagesPreview)
+                foreach (var mess in this.GeneratedMessages)
                 {
                     _mail.SaveMail(mess.Value, string.Format("{0}/{1}", mailPath, mess.Key.Institution));
                 }
@@ -316,11 +318,11 @@ namespace ReportsGenerator
         public event SendingProgress SendingProgressEvent;
         public async Task<Dictionary<MailMessage, string>> SendReports()
         {
-            double steps = this.MessagesPreview.Count;
+            double steps = this.GeneratedMessages.Count;
             double curStep = 0;
             var report = new Dictionary<MailMessage, string>();
             this._mail.UpdateMailSettings();
-            var tasks = from message in this.MessagesPreview
+            var tasks = from message in this.GeneratedMessages
                         select new
             {
                 Mail = message,
@@ -337,6 +339,28 @@ namespace ReportsGenerator
         public async Task<Course> GetCourseById(int courseid)
         {
             return (await this._moodle.GetCoursesByIds(new[] { courseid })).FirstOrDefault();
+        }
+
+        public void LoadMails(string pathToSave)
+        {
+            var oSaver = new OutlookSaver();
+            this.GeneratedMessages.Clear();
+            foreach (var mailMessage in oSaver.LoadMailsFromFolder(pathToSave))
+            {
+                this.GeneratedMessages.Add(new Curator { Email = mailMessage.To.ToString() }, mailMessage);
+            }
+            oSaver.Dispose();
+        }
+
+        public void SaveMails(string pathToSave)
+        {
+            string s = DateTime.Now.ToString(ReporterSettings.Default.DateFormatForFolderName);
+            var oSaver = new OutlookSaver();
+            foreach (var message in _generatedMessages)
+            {
+                oSaver.SaveMailAsOft(message.Value, pathToSave + "/" + s);
+            }
+            oSaver.Dispose();
         }
     }
 

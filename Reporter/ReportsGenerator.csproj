@@ -38,6 +38,9 @@
     <Reference Include="CsvHelper">
       <HintPath>..\packages\CsvHelper.2.13.0.0\lib\net40-client\CsvHelper.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Outlook, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -58,6 +61,7 @@
     <Compile Include="DataStructures\Group.cs" />
     <Compile Include="DataStructures\Grade.cs" />
     <Compile Include="GlobalVariables.cs" />
+    <Compile Include="Mail\OutlookSaver.cs" />
     <Compile Include="Settings\GenerationSetting.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

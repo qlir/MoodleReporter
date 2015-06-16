@@ -11,9 +11,10 @@ namespace ReportsGenerator.Mail
 {
     class Mail
     {
-
         private SmtpClient client = new SmtpClient();
         private string email;
+        private const string EmailExtention = ".eml";
+
         public void UpdateMailSettings()
         {
             client.Host = MailSettings.Default.SmtpServer;
@@ -41,7 +42,7 @@ namespace ReportsGenerator.Mail
                 client.Send(message);
                 File.Move(
                     tempDir.GetFiles().First().FullName,
-                    pathToSave + "/" + string.Format(ReporterSettings.Default.EmailName, message.To.FirstOrDefault(), message.Subject));
+                    pathToSave + "/" + string.Format(ReporterSettings.Default.EmailName + EmailExtention, message.To.FirstOrDefault(), message.Subject));
             }
             catch (Exception e)
             {
@@ -81,7 +82,7 @@ namespace ReportsGenerator.Mail
                         client.Send(mess);
                         File.Move(
                             tempDir.GetFiles().First().FullName,
-                            sessionDir.FullName + "/" + string.Format(ReporterSettings.Default.EmailName, mess.To.FirstOrDefault(), mess.Subject));
+                            sessionDir.FullName + "/" + string.Format(ReporterSettings.Default.EmailName + EmailExtention, mess.To.FirstOrDefault(), mess.Subject));
                     }
                 });
                 return currentSessionDirPath;
@@ -100,9 +101,9 @@ namespace ReportsGenerator.Mail
         {
             try
             {
-/*                message.To.Clear();
-                message.To.Add(new MailAddress("parafus@yandex.ru"));*/
-                message.From = new MailAddress(email);
+                message.To.Clear();
+                /*message.To.Add(new MailAddress("parafus@yandex.ru"));
+                message.From = new MailAddress(email);*/
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 await client.SendMailAsync(message);
                 return null;

@@ -5,7 +5,6 @@ namespace ReportsGenerator.UserData
 {
     using CsvHelper;
     using CsvHelper.Configuration;
-    using Newtonsoft.Json;
     using DataStructures;
     using System.Collections.Generic;
     using System.IO;
@@ -103,7 +102,10 @@ namespace ReportsGenerator.UserData
                 Map(m => m.Gender).Name("Gender");
                 Map(m => m.City).Name("City");
                 Map(m => m.Institution).Name("Institution");
-                Map(m => m.Direction).Name("Direction");
+                Map(m => m.Direction).ConvertUsing(row =>
+                {
+                    return row.CurrentRecord.Count() < 7 ? "" : row.CurrentRecord[6];
+                });
             }
         }
 

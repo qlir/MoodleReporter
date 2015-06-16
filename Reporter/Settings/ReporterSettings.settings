@@ -15,7 +15,7 @@
       <Value Profile="(Default)">yyyy-MM-dd HH.mm.ss</Value>
     </Setting>
     <Setting Name="EmailName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">{0}-{1}.eml</Value>
+      <Value Profile="(Default)">{0}-{1}</Value>
     </Setting>
   </Settings>
 </SettingsFile>

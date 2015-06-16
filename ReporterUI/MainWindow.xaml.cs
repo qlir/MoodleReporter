@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using System.Windows.Input;
 using ReportsGenerator;
 using ReportsGenerator.DataStructures;
@@ -20,6 +21,8 @@ using UIReporter.AccessoryWindow;
 using UIReporter.Annotations;
 using UIReporter.Properties;
 using ComboBox = System.Windows.Controls.ComboBox;
+using Cursors = System.Windows.Input.Cursors;
+using DataGridCell = System.Windows.Controls.DataGridCell;
 using Group = ReportsGenerator.DataStructures.Group;
 using MessageBox = UIReporter.AccessoryWindow.MessageBox;
 using H = UIReporter.Helpers.Helpers;
@@ -62,7 +65,7 @@ namespace UIReporter
         {
             get
             {
-                return _reporter != null && _reporter.MessagesPreview.Count > 0;
+                return _reporter != null && _reporter.GeneratedMessages.Count > 0;
             }
         }
 
@@ -270,7 +273,7 @@ namespace UIReporter
                     _reporter.DefaultTemplate = await TemplateProvider.LoadDefaultTemplate();
                     if (_reporter.DefaultTemplate == null) throw new ReporterException("Не заданно шаблона по умолчанию.");
                     _reporter.LastTemplate = await TemplateProvider.LoadLastTemplate();
-                        
+
                     await GenerateReportAsync();
                     isSuccess = true;
                 }
@@ -324,7 +327,7 @@ namespace UIReporter
 
         private void BtnPreview_OnClick(object sender, RoutedEventArgs e)
         {
-            var messagesPreview = _reporter.MessagesPreview.Values.Select(m => m).ToList();
+            var messagesPreview = _reporter.GeneratedMessages.Values.Select(m => m).ToList();
             if (messagesPreview.Count == 0)
             {
                 ErrorWindow.ShowError(new ReporterException("Нет данных для просмотра."));
@@ -523,6 +526,47 @@ namespace UIReporter
                 }
                 //Save();
                 H.RefreshDataGridIfNotEditing(ReportInfoDataGrid);
+            }
+        }
+
+        private void LoadEmails_OnClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+                var dialog = new FolderBrowserDialog();
+                dialog.ShowDialog();
+                if (dialog.SelectedPath == null) return;
+                _reporter.LoadMails(dialog.SelectedPath);
+                this.OnPropertyChanged("HasGeneratedMessages");
+            }
+            catch (Exception ex)
+            {
+                ErrorWindow.ShowError(ex);
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
+            }
+        }
+
+        private void SaveEmails_OnClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+                var dialog = new FolderBrowserDialog();
+                dialog.ShowDialog();
+                if (dialog.SelectedPath == null) return;
+                _reporter.SaveMails(dialog.SelectedPath);
+            }
+            catch (Exception ex)
+            {
+                ErrorWindow.ShowError(ex);
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
             }
         }
     }
