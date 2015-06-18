@@ -92,6 +92,25 @@ namespace ReportsGenerator.TableGenerator
             return result2.ToDictionary(g => g.TestId, g => g.Average);
         }
 
+        public IDictionary<int, double> CalcMaxByInstitutions()
+        {
+            var result1 = (from i in items
+                           orderby i.TestId
+                           group i by new { i.TestId, i.Institution } into g
+                           select new { Average = g.Average(r => r.Grade), g.Key.TestId });
+            var result2 = from i in result1
+                          where i.Average > 0
+                          orderby i.TestId
+                          group i by i.TestId into g
+                          select new
+            {
+                Average = g.Max(r => r.Average),
+                TestId = g.Key
+            };
+
+            return result2.ToDictionary(g => g.TestId, g => g.Average);
+        }
+
         public Dictionary<int, double> CalcProgressInstitution(string institution)
         {
             return (from i in this.items
@@ -192,13 +211,26 @@ namespace ReportsGenerator.TableGenerator
             foreach (var i in items)
             {
                 var sortedGrade = orderedGrades.Select(g => i.grades.Values.First(vg => vg.TestId == g.TestId));
+
+                var grades = sortedGrade.Select(item => item.Grade).ToList();
+                var additionalStyle = string.Empty;
+
+                // Определение слушателей с балом равным 0
+                for (int ii = 0; ii < weekNumber; ii++)
+                {
+                    if (grades[ii] == 0)
+                    {
+                        additionalStyle = GenerationSetting.Default.BadGradeStyle;
+                        break;
+                    }
+                }
+
                 table.OpenRow(GenerationSetting.Default.GradesRowsStyle);
-                table.AddCell(i.FullName, GenerationSetting.Default.CellStyle);
-                table.AddCell(i.Institution, GenerationSetting.Default.CellStyle);
-                var grades = sortedGrade.Select(item => item.Grade.ToString(_numberFormat)).ToList();
+                table.AddCell(i.FullName, GenerationSetting.Default.CellStyle + additionalStyle);
+                table.AddCell(i.Institution, GenerationSetting.Default.CellStyle + additionalStyle);
                 for (int ii = 0; ii < grades.Count; ii++)
                 {
-                    table.AddCell(grades[ii], (ii < weekNumber ? GenerationSetting.Default.CellStyle + passedColumnStyle : GenerationSetting.Default.CellStyle));
+                    table.AddCell(grades[ii].ToString(_numberFormat), (ii < weekNumber ? GenerationSetting.Default.CellStyle + passedColumnStyle + additionalStyle : GenerationSetting.Default.CellStyle));
                 }
             }
 
@@ -222,6 +254,19 @@ namespace ReportsGenerator.TableGenerator
                 var grade = orderedGrades[i];
                 table.AddCell(
                     (commonAvg.ContainsKey(grade.TestId) ? commonAvg[grade.TestId] : 0).ToString(_numberFormat),
+                    (i < weekNumber ? GenerationSetting.Default.CellStyle + passedColumnStyle : GenerationSetting.Default.CellStyle));
+            }
+            table.CloseRow();
+
+            // Максимальный балл по РИЦам
+            table.OpenRow(GenerationSetting.Default.MaxByInstitutionsRowStyle);
+            table.AddCell(GenerationSetting.Default.MaxByInstitutionsRowHeader, GenerationSetting.Default.CellStyle, nonGradeColumnsCount);
+            var commonMax = CalcMaxByInstitutions();
+            for (int i = 0; i < orderedGrades.Count; i++)
+            {
+                var grade = orderedGrades[i];
+                table.AddCell(
+                    (commonMax.ContainsKey(grade.TestId) ? commonMax[grade.TestId] : 0).ToString(_numberFormat),
                     (i < weekNumber ? GenerationSetting.Default.CellStyle + passedColumnStyle : GenerationSetting.Default.CellStyle));
             }
             table.CloseRow();

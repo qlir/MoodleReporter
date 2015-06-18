@@ -33,7 +33,7 @@
       <Value Profile="(Default)">Среднее по РИЦ</Value>
     </Setting>
     <Setting Name="AVGbyInstitutionsRowStyle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">font-weight:bold;color:red;</Value>
+      <Value Profile="(Default)">font-weight:bold;color:red;display:none;</Value>
     </Setting>
     <Setting Name="AVGbyInstitutionsRowHeader" Type="System.String" Scope="User">
       <Value Profile="(Default)">Среднее по всем РИЦам</Value>
@@ -82,6 +82,15 @@
     </Setting>
     <Setting Name="CuratorsRoles" Type="System.String" Scope="User">
       <Value Profile="(Default)">4,9</Value>
+    </Setting>
+    <Setting Name="BadGradeStyle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">background-color: #ffcccc;</Value>
+    </Setting>
+    <Setting Name="MaxByInstitutionsRowStyle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">color:green;font-weight:bold;</Value>
+    </Setting>
+    <Setting Name="MaxByInstitutionsRowHeader" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Максимальный балл по РИЦам</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -29,6 +29,7 @@ namespace UIReporter.SettingsViews
             AddField("Заголовок строки проходного балла", "PassedGradeRowHeader");
             AddField("Заголовок строки среднеего по РИЦ", "AVGbyInstitutionRowHeader");
             AddField("Заголовок строки среднеего по РИЦам", "AVGbyInstitutionsRowHeader");
+            AddField("Заголовок строки c максимальным по РИЦам", "MaxByInstitutionsRowHeader");
             AddField("Заголовок строки процента успевающих", "ProgressRowHeader");
             AddField("Стиль таблицы", "TableStyle");
             AddField("Стиль заголовка таблицы", "CaptionStyle");
@@ -36,10 +37,12 @@ namespace UIReporter.SettingsViews
             AddField("Стиль строки с проходным баллом", "PassedGradeRowStyle");
             AddField("Стиль строки со средним по РИЦ", "AVGbyInstitutionsRowStyle");
             AddField("Стиль строки co cредним по РИЦам", "AVGbyInstitutionRowStyle");
+            AddField("Стиль строки co максимальным по РИЦам", "MaxByInstitutionsRowStyle");
             AddField("Стиль строки с процентом успеваемости ", "ProgressRowStyle");
             AddField("Стиль строки с оценками", "GradesRowsStyle");
             AddField("Стиль ячеек", "CellStyle");
             AddField("Стиль колонок пройденных недель", "PassedColumnStyle");
+            AddField("Стиль слушателей с оценками 0", "BadGradeStyle");
             AddField("Тег для вставки таблиц", "TagToTablesPaste");
             AddField("Тег для вставки обращения", "TagToWelcomePaste");
             AddField("Шаблон для проверки направления курса", "PatternToCheckDirection");

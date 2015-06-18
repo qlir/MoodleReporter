@@ -145,7 +145,7 @@ namespace ReportsGenerator.Settings {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("font-weight:bold;color:red;")]
+        [global::System.Configuration.DefaultSettingValueAttribute("font-weight:bold;color:red;display:none;")]
         public string AVGbyInstitutionsRowStyle {
             get {
                 return ((string)(this["AVGbyInstitutionsRowStyle"]));
@@ -345,6 +345,42 @@ namespace ReportsGenerator.Settings {
             }
             set {
                 this["CuratorsRoles"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("background-color: #ffcccc;")]
+        public string BadGradeStyle {
+            get {
+                return ((string)(this["BadGradeStyle"]));
+            }
+            set {
+                this["BadGradeStyle"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("color:green;font-weight:bold;")]
+        public string MaxByInstitutionsRowStyle {
+            get {
+                return ((string)(this["MaxByInstitutionsRowStyle"]));
+            }
+            set {
+                this["MaxByInstitutionsRowStyle"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Максимальный балл по РИЦам")]
+        public string MaxByInstitutionsRowHeader {
+            get {
+                return ((string)(this["MaxByInstitutionsRowHeader"]));
+            }
+            set {
+                this["MaxByInstitutionsRowHeader"] = value;
             }
         }
     }
