@@ -118,12 +118,6 @@
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>ReporterSettings.Designer.cs</LastGenOutput>
     </None>
-    <DesignData Include="UserData\Courses.json" />
-    <DesignData Include="UserData\Curators.json" />
-    <None Include="UserData\ReportInfo.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="UserData\template.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -34,6 +34,8 @@
             get;
         }
 
-        string Direction { get;}
+        string Direction { get; }
+
+        string TemplateName { get; }
     }
 }

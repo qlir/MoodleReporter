@@ -10,6 +10,7 @@ using ReportsGenerator.DataStructures;
 using ReportsGenerator.Mail;
 using ReportsGenerator.Settings;
 using ReportsGenerator.TableGenerator;
+using ReportsGenerator.UserData;
 using Group = ReportsGenerator.DataStructures.Group;
 
 namespace ReportsGenerator
@@ -200,7 +201,7 @@ namespace ReportsGenerator
 
             foreach (var tables in this._sheetsForCurators)
             {
-                this.GeneratedMessages.Add(tables.Key, this.GenerateMessage(tables.Value.ToString(), tables.Key, weekNumber == weeksCount));
+                this.GeneratedMessages.Add(tables.Key, await this.GenerateMessage(tables.Value.ToString(), tables.Key, weekNumber == weeksCount));
             }
             try
             {
@@ -284,7 +285,7 @@ namespace ReportsGenerator
                 rinfo.EndDate.Year);
         }
 
-        private MailMessage GenerateMessage(string tables, ICurator curator, bool isLastWeek)
+        private async Task<MailMessage> GenerateMessage(string tables, ICurator curator, bool isLastWeek)
         {
             var email = new MailMessage();
             email.To.Add(new MailAddress(curator.Email));
@@ -297,7 +298,16 @@ namespace ReportsGenerator
                     email.CC.Add(new MailAddress(ccEmail));
                 }
             }
-            string template = isLastWeek ? this.LastTemplate : this.DefaultTemplate;
+            string template;
+            if (string.IsNullOrWhiteSpace(curator.TemplateName))
+            {
+                template = isLastWeek ? this.LastTemplate : this.DefaultTemplate;
+            }
+            else
+            {
+                template = await TemplateProvider.LoadTemplate(curator.TemplateName);
+                if (template == null) throw new ReporterException(string.Format("Шаблон \"{0}\" не найден.", curator.TemplateName));
+            }
             email.Body = template.Replace(GenerationSetting.Default.TagToTablesPaste, tables).Replace(
                              GenerationSetting.Default.TagToWelcomePaste,
                              String.Format(GenerationSetting.Default.Welcome, (curator.IsMan ? GenerationSetting.Default.WelcomeMalePostfix : GenerationSetting.Default.WelcomeFemalePostfix), curator.FirstName));

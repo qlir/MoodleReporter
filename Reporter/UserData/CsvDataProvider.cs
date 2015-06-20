@@ -106,6 +106,10 @@ namespace ReportsGenerator.UserData
                 {
                     return row.CurrentRecord.Count() < 7 ? "" : row.CurrentRecord[6];
                 });
+                Map(m => m.TemplateName).ConvertUsing(row =>
+                {
+                    return row.CurrentRecord.Count() < 8 ? "" : row.CurrentRecord[7];
+                });
             }
         }
 

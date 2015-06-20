@@ -68,7 +68,15 @@
             get
             {
                 return null;
-            } 
+            }
+        }
+
+        public string TemplateName
+        {
+            get
+            {
+                return null;
+            }
         }
 
         [JsonProperty("lastname")]

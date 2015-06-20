@@ -59,6 +59,12 @@ namespace ReportsGenerator.DataStructures
         {
             get;
             set;
+        }   
+        
+        public string TemplateName
+        {
+            get;
+            set;
         }
 
         public bool IsMan

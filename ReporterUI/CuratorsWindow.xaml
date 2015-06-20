@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:validations="clr-namespace:UIReporter.Validations"
         x:Class="UIReporter.CuratorsWindow"
-        Title="Кураторы" Height="300" Width="600" x:Name="CuratorsWindows" Closing="CuratorsWindow_OnClosing"
+        Title="Кураторы" Height="400" Width="800" x:Name="CuratorsWindows" Closing="CuratorsWindow_OnClosing"
         Style="{StaticResource WindowStyle}"
     >
     <Grid>
@@ -105,6 +105,7 @@
                     </DataGridTextColumn.EditingElementStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Направление" EditingElementStyle="{StaticResource ErrorStyle}" Width="*" Binding="{Binding Path=Direction, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Шаблон" EditingElementStyle="{StaticResource ErrorStyle}" Width="*" Binding="{Binding Path=TemplateName, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
