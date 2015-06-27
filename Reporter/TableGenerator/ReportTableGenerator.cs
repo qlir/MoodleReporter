@@ -211,26 +211,22 @@ namespace ReportsGenerator.TableGenerator
             foreach (var i in items)
             {
                 var sortedGrade = orderedGrades.Select(g => i.grades.Values.First(vg => vg.TestId == g.TestId));
-
                 var grades = sortedGrade.Select(item => item.Grade).ToList();
-                var additionalStyle = string.Empty;
+                string additionalStyle = null;
+
 
                 // Определение слушателей с балом равным 0
-                for (int ii = 0; ii < weekNumber; ii++)
-                {
-                    if (grades[ii] == 0)
-                    {
-                        additionalStyle = GenerationSetting.Default.BadGradeStyle;
-                        break;
-                    }
-                }
+                additionalStyle = grades.Take(weekNumber).All(c => c == 0) ? GenerationSetting.Default.BadGradeStyle : string.Empty;
 
-                table.OpenRow(GenerationSetting.Default.GradesRowsStyle);
-                table.AddCell(i.FullName, GenerationSetting.Default.CellStyle + additionalStyle);
-                table.AddCell(i.Institution, GenerationSetting.Default.CellStyle + additionalStyle);
+                table.OpenRow(GenerationSetting.Default.GradesRowsStyle + additionalStyle);
+                table.AddCell(i.FullName, GenerationSetting.Default.CellStyle);
+                table.AddCell(i.Institution, GenerationSetting.Default.CellStyle);
                 for (int ii = 0; ii < grades.Count; ii++)
                 {
-                    table.AddCell(grades[ii].ToString(_numberFormat), (ii < weekNumber ? GenerationSetting.Default.CellStyle + passedColumnStyle + additionalStyle : GenerationSetting.Default.CellStyle));
+                    table.AddCell(grades[ii].ToString(_numberFormat),
+                        !string.IsNullOrEmpty(additionalStyle) ? GenerationSetting.Default.CellStyle + additionalStyle :
+                        (ii < weekNumber ? GenerationSetting.Default.CellStyle + passedColumnStyle : GenerationSetting.Default.CellStyle)
+                        );
                 }
             }
 
