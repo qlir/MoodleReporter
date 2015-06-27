@@ -47,7 +47,7 @@
         <Menu Grid.Row="0" Margin="0" Background="{Binding Background,ElementName=MyWindow}" Foreground="{StaticResource TextBrush1}">
             <MenuItem Header="Настройки" Margin="0" Template="{StaticResource MenuItemControlTemplate}" Height="25">
                 <MenuItem Header="Управление Кураторами" Click="CuratorsCtrl_OnClick"></MenuItem>
-                <MenuItem Header="Настройки генерации и отправки" Click="Settings_OnClick"></MenuItem>
+                <MenuItem Header="Управление Курсами" Click="CoursesCtrl_OnClick"></MenuItem>
                 <MenuItem Header="Сохранить письма" Click="SaveEmails_OnClick"></MenuItem>
                 <MenuItem Header="Загрузить письма" Click="LoadEmails_OnClick"></MenuItem>
                 <MenuItem Header="Настройки" Click="Settings_OnClick"></MenuItem>
