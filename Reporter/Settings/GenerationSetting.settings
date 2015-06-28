@@ -92,5 +92,8 @@
     <Setting Name="MaxByInstitutionsRowHeader" Type="System.String" Scope="User">
       <Value Profile="(Default)">Максимальный балл по РИЦам</Value>
     </Setting>
+    <Setting Name="RaitingText" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Ваш РИЦ занимает {0} место среди {1} участвующих РИЦ.</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -383,5 +383,17 @@ namespace ReportsGenerator.Settings {
                 this["MaxByInstitutionsRowHeader"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ваш РИЦ занимает {0} место среди {1} участвующих РИЦ.")]
+        public string RaitingText {
+            get {
+                return ((string)(this["RaitingText"]));
+            }
+            set {
+                this["RaitingText"] = value;
+            }
+        }
     }
 }
