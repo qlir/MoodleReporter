@@ -1,4 +1,5 @@
 ﻿using System.CodeDom;
+using System.Xaml;
 using ReportsGenerator.Settings;
 
 namespace ReportsGenerator.TableGenerator
@@ -57,6 +58,43 @@ namespace ReportsGenerator.TableGenerator
                 TestId = int.TryParse(activity.Id, out testId) ? testId : int.MaxValue,
                 GradePass = activity.GradePass
             });
+        }
+
+        private int _curentWeeklyTest;
+
+        public int GetInstitutionPlace(string Institution)
+        {
+            return CalcInstitutionsRaiting(new[] { _curentWeeklyTest })[Institution];
+        }
+
+        public int GetInstitutionCount()
+        {
+            return CalcInstitutionsRaiting(new[] { _curentWeeklyTest }).Count;
+        }
+
+        public IDictionary<string, int> CalcInstitutionsRaiting(IEnumerable<int> testIds)
+        {
+            var avgs = from ii in
+                           (from i in items
+                            where testIds.Contains(i.TestId)
+                            group i by i.Institution
+                                into g
+
+                                select new { Institution = g.Key, Average = g.Average(gg => gg.Grade) }
+                               )
+                       orderby -ii.Average
+                       select ii;
+            int lastPlace = 1;
+            double? lastAvg = 0;
+            var result = new Dictionary<string, int>();
+            foreach (var i in avgs)
+            {
+                lastPlace = i.Average == lastAvg ? lastPlace : result.Count + 1;
+                lastAvg = i.Average;
+                result.Add(i.Institution, i.Average == 0?avgs.Count():lastPlace);
+            }
+
+            return result;
         }
 
         public IDictionary<int, double> CalcAVGbyInstitution(string institution)
@@ -173,6 +211,8 @@ namespace ReportsGenerator.TableGenerator
                 return a.TestId.CompareTo(b.TestId);
             });
 
+            _curentWeeklyTest = orderedGrades[(cycle > weekNumber ? weekNumber : orderedGrades.Count) -1].TestId;
+
             HTMLTableGenerator table = new HTMLTableGenerator();
             table.Init(GenerationSetting.Default.TableStyle);
             table.OpenColGroup();
@@ -183,7 +223,8 @@ namespace ReportsGenerator.TableGenerator
             table.CloseColGroup();
 
             // Заголовки
-            table.AddCaption(string.Format(GenerationSetting.Default.TableTitle, weekNumber, course.ShortName), GenerationSetting.Default.CaptionStyle);
+            table.AddCaption(string.Format(GenerationSetting.Default.TableTitle, weekNumber, course.ShortName) + "<p style='text-align:left;' >" + string.Format(GenerationSetting.Default.RaitingText, GetInstitutionPlace(institution), GetInstitutionCount())+"</p>", GenerationSetting.Default.CaptionStyle);
+//            table.AddText(string.Format(GenerationSetting.Default.RaitingText,GetInstitutionPlace(institution),GetInstitutionCount()));
             // table.AddRow(_baseColumnHeaders.Concat(orderedGrades.Select(a => a.TestName)), , );
             table.OpenRow(GenerationSetting.Default.HeadersColumnsStyle);
             foreach (var i in _baseColumnHeaders)

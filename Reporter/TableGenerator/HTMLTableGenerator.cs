@@ -18,9 +18,14 @@
         private const string TdOpen = "<td style='border-collapse: collapse; border: 2px solid dimgray;{0}' colspan='{1}'>";
         private const string TrClose = "</tr>";
         private const string TrOpen = "<tr style='{0}'>";
+        private const string P = "<p style='{0}'>{1}</p>";
 
         readonly StringBuilder _table = new StringBuilder();
 
+        public void AddText(string text, string style = "")
+        {
+            _table.AppendFormat(P, style, text);
+        }
         public void AddCaption(string caption, string style = "")
         {
             _table.AppendFormat(CaptionOpen, style).Append(caption).Append(CaptionClose);
