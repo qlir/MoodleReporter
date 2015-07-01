@@ -223,8 +223,24 @@ namespace ReportsGenerator.TableGenerator
             table.CloseColGroup();
 
             // Заголовки
-            table.AddCaption(string.Format(GenerationSetting.Default.TableTitle, weekNumber, course.ShortName) + "<p style='text-align:left;' >" + string.Format(GenerationSetting.Default.RaitingText, GetInstitutionPlace(institution), GetInstitutionCount())+"</p>", GenerationSetting.Default.CaptionStyle);
-//            table.AddText(string.Format(GenerationSetting.Default.RaitingText,GetInstitutionPlace(institution),GetInstitutionCount()));
+            var _caption = "";
+            if (GetInstitutionPlace(institution) == 1)
+            { 
+                _caption = _caption + "<p style='font-weight:bold;color:green;text-align:left;' >" + string.Format(GenerationSetting.Default.RaitingText, GetInstitutionPlace(institution), GetInstitutionCount()) + "</p>";
+            }
+            else 
+            {
+                if (GetInstitutionPlace(institution) == GetInstitutionCount())
+                {
+                    _caption = _caption + "<p style='font-weight:bold;color:red;text-align:left;' >" + string.Format(GenerationSetting.Default.RaitingText, GetInstitutionPlace(institution), GetInstitutionCount()) + "</p>";
+                }
+                else 
+                {
+                    _caption = _caption + "<p style='font-weight:bold;text-align:left;' >" + string.Format(GenerationSetting.Default.RaitingText, GetInstitutionPlace(institution), GetInstitutionCount()) + "</p>";
+                }
+            }
+            table.AddCaption(string.Format(GenerationSetting.Default.TableTitle, weekNumber, course.ShortName) + _caption, GenerationSetting.Default.CaptionStyle); 
+           //  table.AddText(string.Format(GenerationSetting.Default.RaitingText,GetInstitutionPlace(institution),GetInstitutionCount()));
             // table.AddRow(_baseColumnHeaders.Concat(orderedGrades.Select(a => a.TestName)), , );
             table.OpenRow(GenerationSetting.Default.HeadersColumnsStyle);
             foreach (var i in _baseColumnHeaders)
