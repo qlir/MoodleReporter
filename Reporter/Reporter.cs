@@ -316,7 +316,8 @@ namespace ReportsGenerator
 
         public static int GetWeekNumber(ReportInfo reportInfo)
         {
-            return ((DateTime.Now - reportInfo.StartDate).Days + 1) / 7;
+            double value = ((DateTime.Now - reportInfo.StartDate).Days + 1) / 7.0;
+            return value < 1 ? 1 : Convert.ToInt32(value);
         }
 
         public static int GetWeeksCount(ReportInfo reportInfo)
